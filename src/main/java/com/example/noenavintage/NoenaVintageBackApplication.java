@@ -1,4 +1,4 @@
-package com.example.noenavintage_back;
+package com.example.noenavintage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,7 +6,7 @@ import dataClasses.OrderData;
 import dataClasses.ProductData;
 import dataModels.Product;
 import dataModels.Order;
-import java.util.*;
+
 import java.util.ArrayList;
 
 @SpringBootApplication
