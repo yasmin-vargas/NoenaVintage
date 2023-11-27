@@ -10,12 +10,19 @@ import java.util.List;
 @Entity
 @Table(name="WishList")
 public class WishList {
-    private List<StockItem> wishlist; // Declare a wishlist of stockItems
-    public WishList(){  //Initialize the "wishlist" in the WishList constructor
-        wishlist = new ArrayList<>();
+    long wishListID;
+    long userID;
+    private List<StockItem> wishList; // Declare a wishlist of stockItems
+
+    // Constructor
+    public WishList(long wishListID, long userID, List<StockItem> wishList) {
+        this.wishListID = wishListID;
+        this.userID = userID;
+        this.wishList = wishList;
     }
+    // Getters and setters
     public List<StockItem> getWishListItems() {
-        return wishlist;
+        return wishList;
     }
 
 }

@@ -19,7 +19,6 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/shopping-bag")
 public class ShoppingBagController {  //Shopping Bag Controller Constructor
-    private final static double SHIPPING_COST = 7.95; // Defines a constant shipping cost in EUR
     private static Logger log = LoggerFactory.getLogger(ShoppingBagController.class);
     @Autowired
     private BagItemData bagItemData;

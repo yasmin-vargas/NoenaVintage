@@ -11,16 +11,30 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleEnum roleName;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    private PermissionEnum permissions;
+
+    @ManyToMany
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Define a set of permissions associated with the role
-    @ElementCollection(targetClass = PermissionEnum.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"))
-    @Column(name = "permission")
-    private Set<PermissionEnum> permissions;
+    // Constructor
+    public Role(long roleID, RoleEnum roleName, PermissionEnum permissions) {
+        this.roleID = roleID;
+        this.roleName = roleName;
+        this.permissions = permissions;
+    }
 
-    // Constructors, getters, setters
+    // Getters and Setters
+    public Long getRoleID() {return roleID;}
+
+    public void setRoleID(Long roleID) {this.roleID = roleID;}
+
+    public RoleEnum getRoleName() {return roleName;}
+
+    public void setRoleName(RoleEnum roleName) {this.roleName = roleName;}
+
+    public PermissionEnum getPermissions() {return permissions;}
+
+    public void setPermissions(PermissionEnum permissions) {this.permissions = permissions;}
 }

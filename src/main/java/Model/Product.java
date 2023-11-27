@@ -5,6 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.math.BigDecimal;
 @Entity
 @Table(name="Product")
 public class Product{
@@ -16,9 +17,10 @@ public class Product{
     protected String productBrand;
     protected String productDecade;
     protected String productDescription;
-    protected double importPrice;
-    protected double productPrice;
-    protected double discountPrice;
+    protected ConditionEnum productCondition;
+    protected BigDecimal importPrice;
+    protected BigDecimal productPrice;
+    protected BigDecimal discountPrice;
     protected List<String> productColour; //list of availabe colours
     protected List<String> productSize; //List of available sizes
     protected int stockQty;  //relation to stockQty (sum of all stockQty of one Product)
@@ -29,13 +31,14 @@ public class Product{
     }
 
     // Product Constructor
-    public Product(long productID, String categoryName, String productName, String productBrand, String productDecade, String productDescription, double importPrice, double productPrice, double discountPrice,List<String> productColour,List<String> productSize, int stockQuantity, String supplierCode){
+    public Product(long productID, String categoryName, String productName, String productBrand, String productDecade, String productDescription, ConditionEnum productCondition, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice,List<String> productColour,List<String> productSize, int stockQty, String supplierCode){
         this.productID = productID;
         this.categoryName = categoryName;
         this.productName = productName;
         this.productBrand = productBrand;
         this.productDecade = productDecade;
         this.productDescription = productDescription;
+        this.productCondition = productCondition;
         this.importPrice = importPrice;
         this.productPrice = productPrice;
         this.discountPrice = discountPrice;
@@ -79,22 +82,24 @@ public class Product{
         return productDescription;
     }
     public void setProductDescription(String productDescription) {this.productDescription = productDescription;}
-    public double getImportPrice(){
+    public ConditionEnum getProductCondition() {return productCondition;}
+    public void setProductCondition(ConditionEnum productCondition) {this.productCondition = productCondition;}
+    public BigDecimal getImportPrice(){
         return importPrice;
     }
-    public void setImportPrice(double importPrice) {
+    public void setImportPrice(BigDecimal importPrice) {
         this.importPrice = importPrice;
     }
-    public double getProductPrice(){
+    public BigDecimal getProductPrice(){
         return productPrice;
     }
-    public void setProductPrice(double productPrice) {
+    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
-    public double getDiscountPrice(){
+    public BigDecimal getDiscountPrice(){
         return discountPrice;
     }
-    public void setDiscountPrice(double discountPrice) {
+    public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
     public List<String> getProductColour(){

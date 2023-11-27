@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.Set;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="User")
@@ -15,8 +16,12 @@ public class User {
     private String userPassword;
     private String firstName;
     private String lastName;
-    private String phone;
     private String email;
+    private String phone;
+    private LocalDate birthDate;
+    @Column(name = "reg_date")
+    private Timestamp regDate;
+    private Long roleID;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
@@ -24,17 +29,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-    @Column(name = "reg_date")
-    private Timestamp regDate; // using Timestamp for a date
-    public User(long userID, String userName, String userPassword, String firstName, String lastName, String phone, String email, Timestamp regDate){
+    public User(long userID, String userName, String userPassword, String firstName, String lastName, String email, String phone, Timestamp regDate, LocalDate birthDate, long roleID){
         this.userID = userID;
         this.userName = userName;
         this.userPassword = userPassword;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
         this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
         this.regDate = regDate;
+        this.roleID = roleID;
     }
 
     //Getters and setters
