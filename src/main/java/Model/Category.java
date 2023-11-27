@@ -1,12 +1,21 @@
 package Model;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name="Category")
 public class Category {
-    private int categoryID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long categoryID;
     private String categoryName;
     private String categoryDescription;
     private String parentCategory;
-    @Entity
-    public Category(int categoryID, String categoryName, String categoryDescription) {
+
+    public Category(long categoryID, String categoryName, String categoryDescription, String parentCategory) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;
@@ -14,10 +23,10 @@ public class Category {
     }
 
     //Setters and Getters
-    public int getCategoryID() {
+    public long getCategoryID() {
         return categoryID;
     }
-    public void setCategoryID(int categoryID) {
+    public void setCategoryID(long categoryID) {
         this.categoryID = categoryID;
     }
     public String getCategoryName() {

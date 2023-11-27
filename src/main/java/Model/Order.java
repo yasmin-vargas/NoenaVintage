@@ -1,43 +1,76 @@
 package Model;
+import Repository.OrderData;
+import Repository.UserData;
+import Model.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import java.util.List;
 import java.util.ArrayList;
-@Entity
-public class Order {
-    private int orderID;  // initializing object variables, that represent attributes of an order
-    private int customerID;
-    private double totalAmount;
-    private double totalShipping;
-    private String orderDate;
-    private String dispatchDate;
-    private int shippingID;
-    private OrderStatusEnum orderStatus;
-    private ArrayList<bagItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
+import Model.BagItem;
+import java.sql.Timestamp;
 
+@Entity
+@Table(name="CustomerOrder")
+public class Order {
+    @Id
+    private long orderNumber;  // initializing object variables, that represent attributes of an order
+    private Timestamp orderDate;
+    private double orderAmount;
+    private int customerID;
+    private int billingAddressID;
+    private int shippingAddressID;
+    @Enumerated(EnumType.STRING)
+    private OrderStatusEnum orderStatus;
+    private ArrayList<BagItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
+    public Order() {
+        // Default constructor required by JPA
+    }
     //Order Constructor
-    public Order(int orderID, int customerID, double totalAmount, double totalShipping, String orderDate, String dispatchDate, int shippingID, String orderStatus, ArrayList<bagItem> selectedProducts){
-        this.orderID = orderID;
-        this.customerID = customerID;
-        this.totalAmount = totalAmount;
-        this.totalShipping = totalShipping;
+    public Order(long orderNumber, Timestamp orderDate, double orderAmount, int customerID, int billingAddressID, int shippingAddressID, OrderStatusEnum orderStatus, ArrayList<BagItem> selectedProducts){
+        this.orderNumber = orderNumber;
         this.orderDate = orderDate;
-        this.dispatchDate = dispatchDate;
-        this.shippingID = shippingID;
+        this.orderAmount = orderAmount;
+        this.customerID = customerID;
+        this.billingAddressID = billingAddressID;
+        this.shippingAddressID = shippingAddressID;
         this.orderStatus = orderStatus;
         this.selectedProducts = selectedProducts; //Assign the provided ArrayList to the class field
     }
 
-    //Create an order with an order number /"orderID" (NOT RANDOM, but in order like, 1, 2, 3,4..)
+    // Getters and setters
+    public long getOrderNumber() {return orderNumber;}
 
-    //Method to print the details of the order
-    public void printDetails(){
-        System.out.println("orderID: " + orderID);
-        System.out.println("customerID: " + customerID);
-        System.out.println("totalAmount: " + totalAmount);
-        System.out.println("totalShipping: " + totalShipping);
-        System.out.println("orderDate: " + orderDate);
-        System.out.println("dispatchDate: " + dispatchDate);
-        System.out.println("shippingID: " + shippingID);
-        System.out.println("orderStatus: " + orderStatus);
-        System.out.println("selectedProducts: " + selectedProducts);
-        System.out.println();
-    }
+    public void setOrderNumber(long orderNumber) {this.orderNumber = orderNumber;}
+
+    public Timestamp getOrderDate() {return orderDate;}
+
+    public void setOrderDate(Timestamp orderDate) {this.orderDate = orderDate;}
+
+    public double getOrderAmount() {return orderAmount;}
+
+    public void setOrderAmount(double orderAmount) {this.orderAmount = orderAmount;}
+
+    public int getCustomerID() {return customerID;}
+
+    public void setCustomerID(int customerID) {this.customerID = customerID;}
+
+    public int getBillingAddressID() {return billingAddressID;}
+
+    public void setBillingAddressID(int billingAddressID) {this.billingAddressID = billingAddressID;}
+
+    public int getShippingAddressID() {return shippingAddressID;}
+
+    public void setShippingAddressID(int shippingAddressID) {this.shippingAddressID = shippingAddressID;}
+
+    public OrderStatusEnum getOrderStatus() {return orderStatus;}
+
+    public void setOrderStatus(OrderStatusEnum orderStatus) {this.orderStatus = orderStatus;}
+
+    public List<BagItem> getSelectedProducts() {return selectedProducts;}
+
+    public void setSelectedProducts(ArrayList<BagItem> selectedProducts) {this.selectedProducts = selectedProducts;}
 }
+

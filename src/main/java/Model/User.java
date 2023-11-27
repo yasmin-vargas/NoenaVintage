@@ -1,45 +1,63 @@
 package Model;
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import java.util.Set;
+import java.sql.Timestamp;
+
 @Entity
+@Table(name="User")
 public class User {
-    private int userID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long userID;
     private String userName;
     private String userPassword;
-
-    public User(int userID, String username, String password){
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private String email;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+    @Column(name = "reg_date")
+    private Timestamp regDate; // using Timestamp for a date
+    public User(long userID, String userName, String userPassword, String firstName, String lastName, String phone, String email, Timestamp regDate){
         this.userID = userID;
-        this.userName = username;
-        this.userPassword = password;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.regDate = regDate;
     }
 
     //Getters and setters
-    public int getUserID(){
+    public long getUserID(){return userID;}
+    public void setUserID(long userID) {this.userID = userID;}
+    public String getUserName(){return userName;}
+    public void setUserName(String userName) {this.userName = userName;}
+    public String getUserPassword(){return userPassword;}
+    public void setUserPassword(String userPassword) {this.userPassword = userPassword;}
+    public String getFirstName() {return firstName;}
+    public void setFirstName(String firstName) {this.firstName = firstName;}
+    public String getLastName() {return lastName;}
+    public void setLastName(String lastName) {this.lastName = lastName;}
+    public String getPhone() {return phone;}
+    public void setPhone(String phone) {this.phone = phone;}
+    public String getEmail() {return email;}
+    public void setEmail(String email) {this.email = email;}
+    public Timestamp getRegDate() {return regDate;}
+    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
 
-        return userID;
+    //Login method
+    public boolean login(String enteredPassword) {
+         // Check if enteredPassword matches the stored password
+         return enteredPassword.equals(this.userPassword);
     }
-    public void setUserID(int userID) {
-
-        this.userID = userID;
-    }
-    public int getUserName(){
-
-        return userName;
-    }
-    public void setUserName(int userName) {
-
-        this.userName = userName;
-    }
-    public int getUserPassword(){
-
-        return userPassword;
-    }
-    public void setUserPassword(int userPassword) {
-
-        this.userPassword = userPassword;
-    }
-    public boolean login(String enteredPassword){
-        // checks if the entered password == the stored password
-        return enteredPassword.equals(userPassword);
-    }
-
-    // Missing a method for Registering a new User account
 }
