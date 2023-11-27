@@ -39,21 +39,21 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
     // Endpoint to update an existing category
-    @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        if (!categoryData.existsById(id)) {
+    @PutMapping("/{categoryID}")
+    public ResponseEntity<Category> updateCategory(@PathVariable Long categoryID, @RequestBody Category category) {
+        if (!categoryData.existsById(categoryID)) {
             return ResponseEntity.notFound().build();
         }
-        category.setCategoryID(id);
+        category.setCategoryID(categoryID);
         Category updatedCategory = categoryData.save(category);
         return ResponseEntity.ok(updatedCategory);
     }
 
     // Endpoint to delete a category
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        if (categoryData.existsById(id)) {
-            categoryData.deleteById(id);
+    @DeleteMapping("/{categoryID}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryID) {
+        if (categoryData.existsById(categoryID)) {
+            categoryData.deleteById(categoryID);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

@@ -17,6 +17,10 @@ public class StockItem extends Product{
     private String stockSize;
     private int stockQty;
 
+    // Default constructor is necessary for JPA entities
+    public StockItem() {
+    }
+
     // Stock Item Constructor
     public StockItem(long stockID, int productID, String productName, String productBrand, String productDecade, String productDescription, double importPrice, double productPrice, double discountPrice, List<String> productColour, List<String> productSize, int productQty, String supplierCode, double stockPrice, String stockColour, String stockSize, int stockQty){
         super(productID, null, productName, productBrand, productDecade, productDescription, importPrice, productPrice, discountPrice, productColour, productSize, productQty, supplierCode);

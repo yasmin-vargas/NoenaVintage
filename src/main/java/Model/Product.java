@@ -24,6 +24,10 @@ public class Product{
     protected int stockQty;  //relation to stockQty (sum of all stockQty of one Product)
     protected String supplierCode;
 
+    // No-argument constructor
+    public Product() {
+    }
+
     // Product Constructor
     public Product(long productID, String categoryName, String productName, String productBrand, String productDecade, String productDescription, double importPrice, double productPrice, double discountPrice,List<String> productColour,List<String> productSize, int stockQuantity, String supplierCode){
         this.productID = productID;

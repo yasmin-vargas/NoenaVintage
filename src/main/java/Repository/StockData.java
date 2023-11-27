@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface StockItemData extends JpaRepository<StockItem, Long> {
+public interface StockData extends JpaRepository<StockItem, Long> {
     List<StockItem> findByStockID(Long stockID);
+    List<StockItem> findByStockColour(String stockColour);
+    List<StockItem> findByStockSize(String stockSize);
 }

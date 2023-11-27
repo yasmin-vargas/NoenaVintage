@@ -22,9 +22,9 @@ public class ProductController {
     public List<Product> getAllProducts() {
         return productData.findAll();
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> productOptional = productData.findById(id);
+    @GetMapping("/{productID}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long productID) {
+        Optional<Product> productOptional = productData.findById(productID);
         return productOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @PostMapping
@@ -32,16 +32,17 @@ public class ProductController {
         Product createdProduct = productData.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        Optional<Product> existingProductOptional = productData.findById(id);
+    @PutMapping("/{productID}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productID, @RequestBody Product updatedProduct) {
+        Optional<Product> existingProductOptional = productData.findById(productID);
         if (existingProductOptional.isPresent()) {
             Product existingProduct = existingProductOptional.get();
             // Ensure that the ProductID is set properly
-            existingProduct.setProductID(id);
+            existingProduct.setProductID(productID);
 
             existingProduct.setProductName(updatedProduct.getProductName());
             existingProduct.setProductBrand(updatedProduct.getProductBrand());
+
 
             Product updated = productData.save(existingProduct);
             return ResponseEntity.ok(updated);
@@ -49,11 +50,11 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        Optional<Product> existingProductOptional = productData.findById(id);
+    @DeleteMapping("/{productID}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productID) {
+        Optional<Product> existingProductOptional = productData.findById(productID);
         if (existingProductOptional.isPresent()) {
-            productData.deleteById(id);
+            productData.deleteById(productID);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -75,7 +76,7 @@ public class ProductController {
     }
 
     // Placeholder for search method
-    @GetMapping("/search")
+    @GetMapping("/searchProduct")
     public List<Product> searchProducts(
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "brand", required = false) String brand,

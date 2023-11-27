@@ -24,7 +24,7 @@ public class OrderController {
     public List<Order> getAllOrders() {
         return orderData.findAll();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/{orderNumber}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long orderNumber) {
         Optional<Order> orderOptional = orderData.findById(orderNumber);
         return orderOptional.map(order -> ResponseEntity.ok(order)).orElseGet(() -> ResponseEntity.notFound().build());
@@ -54,12 +54,12 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order updatedOrder) {
-        Optional<Order> existingOrderOptional = orderData.findById(id);
+    @PutMapping("/{orderNumber}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Long orderNumber, @RequestBody Order updatedOrder) {
+        Optional<Order> existingOrderOptional = orderData.findById(orderNumber);
         if (existingOrderOptional.isPresent()) {
             Order existingOrder = existingOrderOptional.get();
-            updatedOrder.setOrderNumber(id);
+            updatedOrder.setOrderNumber(orderNumber);
             Order updated = orderData.save(updatedOrder);
             return ResponseEntity.ok(updated);
         } else {
@@ -67,22 +67,22 @@ public class OrderController {
         }
     }
     //Managing orderStatus
-    @PutMapping("/{id}/status/{newOrderStatus}")
-    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long id, @PathVariable String newStatus) {
-        orderData.updateOrderStatus(id, newStatus);
+    @PutMapping("/{orderNumber}/status/{newOrderStatus}")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long orderNumber, @PathVariable String newStatus) {
+        orderData.updateOrderStatus(orderNumber, newStatus);
         // Check if the new orderStatus is "Confirmed"
         if ("Confirmed".equalsIgnoreCase(newStatus)) {
             // Trigger actions to send order confirmation and tracking number
-            orderData.sendOrderConfirmation(id);
-            orderData.sendTrackingNumber(id);
+            orderData.sendOrderConfirmation(orderNumber);
+            orderData.sendTrackingNumber(orderNumber);
         }
         return ResponseEntity.ok().build();
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        Optional<Order> existingOrderOptional = orderData.findById(id);
+    @DeleteMapping("/{orderNumber}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderNumber) {
+        Optional<Order> existingOrderOptional = orderData.findById(orderNumber);
         if (existingOrderOptional.isPresent()) {
-            orderData.deleteById(id);
+            orderData.deleteById(orderNumber);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
