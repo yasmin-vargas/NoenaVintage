@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class CheckoutController {
     @Autowired
@@ -23,8 +24,8 @@ public class CheckoutController {
     @GetMapping("/checkoutsummary")
     // Get Checkout summary
     public ResponseEntity<Map<String, Object>> getCheckoutSummary() {
-        double totalAmount = shoppingBagController.getTotalAmount();
-        double shippingCost = shoppingBagController.getShippingCost();
+        BigDecimal totalAmount = shoppingBagController.getTotalAmount();
+        BigDecimal shippingCost = shoppingBagController.getShippingCost();
 
         // Convert checkout details to a format suitable for JSON response
         // Using Map.of to create an unmodifiable map
@@ -37,10 +38,11 @@ public class CheckoutController {
 
     // Method to calculate getTotalAmount() bagItemPrice * bagItemQuantity
     @GetMapping("/total-amount")
-    public double getTotalAmount() {
-        double totalAmount = 0.0; // Initialize variable "totalAmount" to 0.0
+    public BigDecimal getTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.valueOf(0.0); // Initialize variable "totalAmount" to 0.0
         for (BagItem bagItem : bagItems) {
-            totalAmount += bagItem.getBagItemPrice()* bagItem.getBagItemQty();
+            BigDecimal itemTotal = bagItem.getBagItemPrice().multiply(BigDecimal.valueOf(bagItem.getBagItemQty()));
+            totalAmount = totalAmount.add(itemTotal);
         }
         return totalAmount;
     }
