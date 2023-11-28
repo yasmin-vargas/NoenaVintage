@@ -27,7 +27,7 @@ public class BagItem {
     private User user;
 
     // Constructor to create a BagItem from StockItem
-    public BagItem(long bagItemID, String productBrand, String productName, String bagItemColour, String bagItemSize, int bagItemQty, BigDecimal bagItemPrice, long stockID, long userID){
+    public BagItem(long bagItemID, String productBrand, String productName, String bagItemColour, String bagItemSize, int bagItemQty, BigDecimal bagItemPrice, StockItem stockitem, User user){
         this.bagItemID = bagItemID;
         this.productBrand = productBrand;
         this.productName = productName;
@@ -35,8 +35,8 @@ public class BagItem {
         this.bagItemSize = bagItemSize;
         this.bagItemQty = bagItemQty;
         this.bagItemPrice = bagItemPrice;
-        this.stockID = stockID;
-        this.userID = userID;
+        this.stockItem = stockItem;
+        this.user = user;
     }
 
     //Getters and setters

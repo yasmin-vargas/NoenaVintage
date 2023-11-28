@@ -2,6 +2,7 @@ package Model;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.util.List;
 import java.util.Set;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class User {
     private String email;
     private String phone;
     private LocalDate birthDate;
-    @Column(name = "reg_date")
+    @Column(name = "regDate")
     private Timestamp regDate;
     private Long roleID;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -29,6 +30,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Address> userAddresses;
     public User(long userID, String userName, String userPassword, String firstName, String lastName, String email, String phone, Timestamp regDate, LocalDate birthDate, long roleID){
         this.userID = userID;
         this.userName = userName;

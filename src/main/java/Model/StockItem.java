@@ -23,8 +23,8 @@ public class StockItem extends Product{
     }
 
     // Stock Item Constructor
-    public StockItem(long stockID, int productID, String productName, String productBrand, String productDecade, String productDescription, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, List<String> productColour, List<String> productSize, int productQty, String supplierCode, double stockPrice, String stockColour, String stockSize, int stockQty){
-        super(productID, null, productName, productBrand, productDecade, productDescription, importPrice, productPrice, discountPrice, productColour, productSize, productQty, supplierCode);
+    public StockItem(long stockID, int productID, String productName, String productBrand, String productDescription, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, String supplierCode, String productImageURL, String thumbnailURL, BigDecimal stockPrice, String stockColour, String stockSize, int stockQty){
+        super(productID, null, productName, productBrand, productDescription, importPrice, productPrice, discountPrice, supplierCode, productImageURL, thumbnailURL);
         this.stockID = stockID;
         this.stockPrice = stockPrice;
         this.stockColour = stockColour;

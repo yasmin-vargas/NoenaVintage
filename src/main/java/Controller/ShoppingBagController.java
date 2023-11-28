@@ -1,6 +1,7 @@
 package Controller;
 import Model.StockItem;
 import Model.BagItem;
+import Model.User;
 import Repository.BagItemData;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,35 +16,36 @@ import java.util.Optional;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/shopping-bag")
 public class ShoppingBagController {  //Shopping Bag Controller Constructor
-    private final static double SHIPPING_COST = 7.95; // Defines a constant shipping cost in EUR
+    private final static BigDecimal SHIPPING_COST = new BigDecimal("7.95"); // Defines a constant shipping cost in EUR
     private static Logger log = LoggerFactory.getLogger(ShoppingBagController.class);
     @Autowired
     private BagItemData bagItemData;
 
     // Helper method to convert stockItems into bagItems
-    private BagItem convertToBagItem (StockItem stockItem) {
+    private BagItem convertToBagItem (StockItem stockItem, User user) {
         //Creates a new bagItem using information from the StockItem
         BagItem bagItem = new BagItem(
-          1L, // Example value, provide the appropriate arguments
-                  1L,
+          81000000001L, // Example value, provide the appropriate arguments
                   stockItem.getProductBrand(), //Getters from StockItem model
                   stockItem.getProductName(),
                   stockItem.getStockColour(),
                   stockItem.getStockSize(),
                   1,
                   stockItem.getStockPrice(),
-                  stockItem
+                  stockItem,
+                  user
         );
         return bagItem;
     }
     @PostMapping("/add-to-bag")
     // Adds converted StockItems - BagItems to ShoppingBag
-    public void addToBag(@RequestBody StockItem stockItem) {  //data model "StockItem"
-        BagItem bagItem = convertToBagItem(stockItem); //converts stockItem to bagItem before adding to bag
+    public void addToBag(@RequestBody StockItem stockItem, User user) {  //data model "StockItem"
+        BagItem bagItem = convertToBagItem(stockItem, user); //converts stockItem to bagItem before adding to bag
         // Save the BagItem to the repository
         bagItemData.save(bagItem); // adds the now converted "bagItem" to the ShoppingBag
     }
@@ -74,15 +76,16 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
             });
     }
     // Get shipping cost
-    public double getShippingCost() {return SHIPPING_COST;}
+    public BigDecimal getShippingCost() {return SHIPPING_COST;}
 
     // Method to calculate getTotalAmount() bagItemPrice * bagItemQuantity
     @GetMapping("/total-amount")
-    public double getTotalAmount() {
-        double totalAmount = 0.0; // Initialize variable "totalAmount" to 0.0
+    public BigDecimal getTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.valueOf(0.0); // Initialize variable "totalAmount" to 0.0
         // Iterate over bag items from the repository
         for (BagItem bagItem : bagItemData.findAll()) {
-            totalAmount += bagItem.getBagItemPrice() * bagItem.getBagItemQty();
+            BigDecimal itemTotal = bagItem.getBagItemPrice().multiply(BigDecimal.valueOf(bagItem.getBagItemQty()));
+            totalAmount = totalAmount.add(itemTotal);
         }
         return totalAmount;
     }

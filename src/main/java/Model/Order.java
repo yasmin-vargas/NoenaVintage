@@ -16,7 +16,7 @@ import Model.BagItem;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name="CustomerOrder")
+@Table(name="´Order´")
 public class Order {
     @Id
     private long orderNumber;  // initializing object variables, that represent attributes of an order
@@ -27,26 +27,23 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "userID")
     private long userID;
-    @ManyToMany
-    @JoinColumn(name = "billingAddressID")
-    private long billingAddressID;
-    @ManyToMany
-    @JoinColumn(name = "shippingAddressID")
-    private long shippingAddressID;
+
+    @ManyToOne
+    @JoinColumn(name = "addressID")
+    private long addressID;
 
     private ArrayList<BagItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA
     }
 
     //Order Constructor
-    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long billingAddressID, long shippingAddressID, ArrayList<BagItem> selectedProducts){
+    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long addressID, ArrayList<BagItem> selectedProducts){
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.orderStatus = orderStatus;
         this.userID = userID;
-        this.billingAddressID = billingAddressID;
-        this.shippingAddressID = shippingAddressID;
+        this.addressID = addressID;
         this.selectedProducts = selectedProducts; //Assign the provided ArrayList to the class field
     }
 
@@ -59,12 +56,10 @@ public class Order {
     public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
     public OrderStatusEnum getOrderStatus() {return orderStatus;}
     public void setOrderStatus(OrderStatusEnum orderStatus) {this.orderStatus = orderStatus;}
-    public int getUserID() {return userID;}
-    public void setUserID(int userID) {this.userID = userID;}
-    public int getBillingAddressID() {return billingAddressID;}
-    public void setBillingAddressID(int billingAddressID) {this.billingAddressID = billingAddressID;}
-    public int getShippingAddressID() {return shippingAddressID;}
-    public void setShippingAddressID(int shippingAddressID) {this.shippingAddressID = shippingAddressID;}
+    public long getUserID() {return userID;}
+    public void setUserID(long userID) {this.userID = userID;}
+    public long getAddressID() {return addressID;}
+    public void setAddressID(long billingAddressID) {this.addressID = addressID;}
     public List<BagItem> getSelectedProducts() {return selectedProducts;}
     public void setSelectedProducts(ArrayList<BagItem> selectedProducts) {this.selectedProducts = selectedProducts;}
 }

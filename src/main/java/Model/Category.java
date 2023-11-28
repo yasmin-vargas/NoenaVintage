@@ -14,12 +14,14 @@ public class Category {
     private String categoryName;
     private String categoryDescription;
     private String parentCategory;
+    private String categoryImageURL;
 
-    public Category(long categoryID, String categoryName, String categoryDescription, String parentCategory) {
+    public Category(long categoryID, String categoryName, String categoryDescription, String parentCategory, String categoryImageURL) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;
         this.parentCategory = parentCategory;
+        this.categoryImageURL = categoryImageURL;
     }
 
     //Setters and Getters
@@ -46,5 +48,11 @@ public class Category {
     }
     public void setParentCategory(String parentCategory) {
         this.parentCategory = parentCategory;
+    }
+    public String getCategoryImageURL() {
+        return categoryImageURL;
+    }
+    public void setCategoryImageURL(String categoryImageURL) {
+        this.categoryImageURL = categoryImageURL;
     }
 }
