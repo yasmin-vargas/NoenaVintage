@@ -17,7 +17,6 @@ public class Product{
     protected String productBrand;
     protected String productDecade;
     protected String productDescription;
-    protected ConditionEnum productCondition;
     protected BigDecimal importPrice;
     protected BigDecimal productPrice;
     protected BigDecimal discountPrice;

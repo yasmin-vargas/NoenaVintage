@@ -1,4 +1,4 @@
 package Repository;
 
-public class ShoppingBagData {
+public interface ShoppingBagData {
 }

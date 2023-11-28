@@ -1,6 +1,6 @@
 package Controller;
 import Model.StockItem;
-import Repository.StockData;
+import Repository.StockItemData;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stock")
-public class StockController {
-    private StockData stockData;
+public class StockItemController {
+    private StockItemData stockData;
 
     @Autowired
-    public StockController(StockData stockData) {
+    public StockItemController(StockItemData stockData) {
         this.stockData = stockData;
     }
 
