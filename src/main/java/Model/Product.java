@@ -11,40 +11,35 @@ import java.math.BigDecimal;
 public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long productID;
-    protected String categoryName;
-    protected String productName;
-    protected String productBrand;
-    protected String productDecade;
-    protected String productDescription;
-    protected BigDecimal importPrice;
-    protected BigDecimal productPrice;
-    protected BigDecimal discountPrice;
-    protected List<String> productColour; //list of availabe colours
-    protected List<String> productSize; //List of available sizes
-    protected int stockQty;  //relation to stockQty (sum of all stockQty of one Product)
-    protected String supplierCode;
+    private long productID;
+    private String categoryName;
+    private String productName;
+    private String productBrand;
+    private String productDescription;
+    private BigDecimal importPrice;
+    private BigDecimal productPrice;
+    private BigDecimal discountPrice;
+    private String supplierCode;
+    private String productImageURL;
+    private String thumbnailURL;
 
     // No-argument constructor
     public Product() {
     }
 
     // Product Constructor
-    public Product(long productID, String categoryName, String productName, String productBrand, String productDecade, String productDescription, ConditionEnum productCondition, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice,List<String> productColour,List<String> productSize, int stockQty, String supplierCode){
+    public Product(long productID, String categoryName, String productName, String productBrand, String productDescription, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, String supplierCode, String productImageURL, String thumbnailURL){
         this.productID = productID;
         this.categoryName = categoryName;
         this.productName = productName;
         this.productBrand = productBrand;
-        this.productDecade = productDecade;
         this.productDescription = productDescription;
-        this.productCondition = productCondition;
         this.importPrice = importPrice;
         this.productPrice = productPrice;
         this.discountPrice = discountPrice;
-        this.productColour = productColour;
-        this.productSize = productSize;
-        this.stockQty = stockQty;
         this.supplierCode = supplierCode;
+        this.productImageURL = productImageURL;
+        this.thumbnailURL = thumbnailURL;
     }
 
     // Calculate total product quantity
@@ -71,18 +66,12 @@ public class Product{
     public void setProductBrand(String productBrand) {
         this.productBrand = productBrand;
     }
-    public String getProductDecade(){
-        return productDecade;
-    }
-    public void setProductDecade(String productDecade) {
-        this.productDecade = productDecade;
-    }
     public String getProductDescription(){
         return productDescription;
     }
-    public void setProductDescription(String productDescription) {this.productDescription = productDescription;}
-    public ConditionEnum getProductCondition() {return productCondition;}
-    public void setProductCondition(ConditionEnum productCondition) {this.productCondition = productCondition;}
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
     public BigDecimal getImportPrice(){
         return importPrice;
     }
@@ -101,26 +90,22 @@ public class Product{
     public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
-    public List<String> getProductColour(){
-        return productColour;
-    }
-    public void setProductColour(List<String> productColour) {
-        this.productColour = productColour;
-    }
-    public List<String> getProductSize(){
-        return productSize;
-    }
-    public void setProductSize(List<String> productSize) {this.productSize = productSize;}
-    public int getStockQty(){
-        return stockQty;
-    }
-    public void setStockQty(int stockQty) {
-        this.stockQty = stockQty;
-    }
     public String getSupplierCode(){
         return supplierCode;
     }
     public void setSupplierCode(String supplierCode) {
         this.supplierCode = supplierCode;
+    }
+    public String getProductImageURL(){
+        return productImageURL;
+    }
+    public void setProductImageURL(String productImageURL) {
+        this.productImageURL = productImageURL;
+    }
+    public String getThumbnailURL(){
+        return thumbnailURL;
+    }
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
 }

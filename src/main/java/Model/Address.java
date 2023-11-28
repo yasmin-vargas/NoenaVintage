@@ -5,9 +5,6 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressID;
-
-    @Enumerated(EnumType.STRING)
-    private AddressTypeEnum addressType;
     private String streetAddress;
     private int postalCode;
     private String city;
@@ -18,9 +15,8 @@ public class Address {
     private User user;
 
     // Constructor
-    public Address(long addressID, AddressTypeEnum addressType, String streetAddress, int postalCode, String city, String country) {
+    public Address(long addressID, String streetAddress, int postalCode, String city, String country) {
         this.addressID = addressID;
-        this.addressType = addressType;
         this.streetAddress = streetAddress;
         this.postalCode = postalCode;
         this.city = city;
