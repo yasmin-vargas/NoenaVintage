@@ -10,8 +10,8 @@ public class Address {
     private String city;
     private String country;
 
-    @ManyToMany
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "userID")
     private User user;
 
     // Constructor
@@ -26,8 +26,6 @@ public class Address {
     // Getters and Setters
     public Long getAddressID() {return addressID;}
     public void setAddressID(Long addressID) {this.addressID = addressID;}
-    public AddressTypeEnum getAddressType() {return addressType;}
-    public void setAddressType(AddressTypeEnum addressType) {this.addressType = addressType;}
     public String getStreetAddress() {return streetAddress;}
     public void setStreetAddress(String streetAddress) {this.streetAddress = streetAddress;}
     public int getPostalCode() {return postalCode;}
