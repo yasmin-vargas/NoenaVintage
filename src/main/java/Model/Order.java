@@ -25,21 +25,21 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatusEnum orderStatus;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private int userID;
+    @JoinColumn(name = "userID")
+    private long userID;
     @ManyToMany
-    @JoinColumn(name = "billing_address_id")
-    private int billingAddressID;
+    @JoinColumn(name = "billingAddressID")
+    private long billingAddressID;
     @ManyToMany
-    @JoinColumn(name = "shipping_address_id")
-    private int shippingAddressID;
+    @JoinColumn(name = "shippingAddressID")
+    private long shippingAddressID;
 
     private ArrayList<BagItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA
     }
 
     //Order Constructor
-    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,int userID, int billingAddressID, int shippingAddressID, ArrayList<BagItem> selectedProducts){
+    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long billingAddressID, long shippingAddressID, ArrayList<BagItem> selectedProducts){
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
