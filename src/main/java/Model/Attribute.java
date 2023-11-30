@@ -13,7 +13,7 @@ public class Attribute {
     private long attributeID;
     private String attributeType;
     private String attributeValue;
-    private long productID;
+    private Product product;
     public Attribute() {  // No-argument constructor
     }
 
@@ -22,7 +22,7 @@ public class Attribute {
         this.attributeID = attributeID;
         this.attributeType = attributeType;
         this.attributeValue = attributeValue;
-        this.productID = productID;
+        this.product = product;
     }
 
     // Getters and setters

@@ -1,4 +1,4 @@
 package Repository;
 
-public class WishListData {
+public interface WishListData {
 }

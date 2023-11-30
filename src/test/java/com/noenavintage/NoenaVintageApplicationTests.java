@@ -1,4 +1,4 @@
-package com.example.noenavintage;
+package com.noenavintage;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

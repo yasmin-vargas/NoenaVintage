@@ -15,8 +15,7 @@ public class Address {
     private User user;
 
     // Constructor
-    public Address(long addressID, String streetAddress, int postalCode, String city, String country) {
-        this.addressID = addressID;
+    public Address(String streetAddress, int postalCode, String city, String country) {
         this.streetAddress = streetAddress;
         this.postalCode = postalCode;
         this.city = city;

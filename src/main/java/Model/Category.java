@@ -16,8 +16,7 @@ public class Category {
     private String parentCategory;
     private String categoryImageURL;
 
-    public Category(long categoryID, String categoryName, String categoryDescription, String parentCategory, String categoryImageURL) {
-        this.categoryID = categoryID;
+    public Category(String categoryName, String categoryDescription, String parentCategory, String categoryImageURL) {
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;
         this.parentCategory = parentCategory;

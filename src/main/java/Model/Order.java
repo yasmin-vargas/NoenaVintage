@@ -1,7 +1,4 @@
 package Model;
-import Repository.OrderData;
-import Repository.UserData;
-import Model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -12,7 +9,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
-import Model.BagItem;
 import java.sql.Timestamp;
 
 @Entity
@@ -32,12 +28,12 @@ public class Order {
     @JoinColumn(name = "addressID")
     private long addressID;
 
-    private ArrayList<BagItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
+    private ArrayList<StockItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA
     }
 
     //Order Constructor
-    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long addressID, ArrayList<BagItem> selectedProducts){
+    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long addressID, ArrayList<StockItem> selectedProducts){
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
@@ -60,7 +56,7 @@ public class Order {
     public void setUserID(long userID) {this.userID = userID;}
     public long getAddressID() {return addressID;}
     public void setAddressID(long billingAddressID) {this.addressID = addressID;}
-    public List<BagItem> getSelectedProducts() {return selectedProducts;}
-    public void setSelectedProducts(ArrayList<BagItem> selectedProducts) {this.selectedProducts = selectedProducts;}
+    public List<StockItem> getSelectedProducts() {return selectedProducts;}
+    public void setSelectedProducts(ArrayList<StockItem> selectedProducts) {this.selectedProducts = selectedProducts;}
 }
 

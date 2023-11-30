@@ -20,20 +20,13 @@ public class User {
     private String email;
     private String phone;
     private LocalDate birthDate;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum userRole;
     @Column(name = "regDate")
     private Timestamp regDate;
-    private Long roleID;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> userAddresses;
-    public User(long userID, String userName, String userPassword, String firstName, String lastName, String email, String phone, Timestamp regDate, LocalDate birthDate, long roleID){
-        this.userID = userID;
+    public User(String userName, String userPassword, String firstName, String lastName, String email, String phone, LocalDate birthDate, RoleEnum userRole, Timestamp regDate){
         this.userName = userName;
         this.userPassword = userPassword;
         this.firstName = firstName;
@@ -41,8 +34,8 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
+        this.userRole = userRole;
         this.regDate = regDate;
-        this.roleID = roleID;
     }
 
     //Getters and setters
@@ -60,6 +53,10 @@ public class User {
     public void setPhone(String phone) {this.phone = phone;}
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
+    public LocalDate getBirthDate() {return birthDate;}
+    public void setBirthDate(LocalDate birthDate) {this.birthDate = birthDate;}
+    public RoleEnum getUserRole() {return userRole;}
+    public void setUserRole(RoleEnum userRole) {this.userRole = userRole;}
     public Timestamp getRegDate() {return regDate;}
     public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
 

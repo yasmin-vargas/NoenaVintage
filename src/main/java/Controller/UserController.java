@@ -16,7 +16,7 @@ public class UserController {
     public UserController(UserData userData) {
         this.userData = userData;
     }
-    @GetMapping
+    @GetMapping("/allusers")
     public List<User> getAllUsers() {
         return userData.findAll();
     }
@@ -24,11 +24,6 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> userOptional = userData.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userData.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
@@ -71,19 +66,6 @@ public class UserController {
             return ResponseEntity.ok(user.isPresent() ? Optional.of(user.get()) : Optional.empty());
         } else {
             return ResponseEntity.badRequest().body(Optional.empty());
-        }
-    }
-    // Login
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        String userName = user.getUserName();
-        String enteredPassword = user.getUserPassword();
-        // Retrieve user by userName
-        User storedUser = userData.findByUserName(userName).orElse(null);
-        if (storedUser != null && storedUser.login(enteredPassword)) {
-            return ResponseEntity.ok("Login successful");  // Authentication successful
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");  // Authentication failed
         }
     }
 }

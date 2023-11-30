@@ -20,7 +20,7 @@ public class OrderController {
     public OrderController(OrderData orderData) {
         this.orderData = orderData;
     }
-    @GetMapping
+    @GetMapping("/all-orders")
     public List<Order> getAllOrders() {
         return orderData.findAll();
     }
@@ -43,7 +43,7 @@ public class OrderController {
         return ResponseEntity.ok(orderHistory);
     }
     // Method to create new order and add it to the orderList when the customer places an order
-    @PostMapping("/add")
+    @PostMapping("/addOrder")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         // Set the initial status to "Pending" or "Processing"
         order.setOrderStatus(OrderStatusEnum.CONFIRMED);

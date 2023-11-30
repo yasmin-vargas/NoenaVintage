@@ -30,7 +30,7 @@ public class StockItemController {
         return stockItemOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/{id}")
     public ResponseEntity<StockItem> createStockItem(@RequestBody StockItem stockItem) {
         StockItem createdStockItem = stockData.save(stockItem);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStockItem);
