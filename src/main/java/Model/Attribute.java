@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import Model.Product;
 
 @Entity
 @Table(name="Attribute")
@@ -18,7 +19,7 @@ public class Attribute {
     }
 
     // Product Constructor
-    public Attribute(long attributeID, String attributeType, String attributeValue, long productID) {
+    public Attribute(long attributeID, String attributeType, String attributeValue, Product product) {
         this.attributeID = attributeID;
         this.attributeType = attributeType;
         this.attributeValue = attributeValue;
@@ -32,6 +33,6 @@ public class Attribute {
     public void setAttributeType(String attributeType) {this.attributeType = attributeType;}
     public String getAttributeValue() {return attributeValue;}
     public void setAttributeValue(String attributeValue) {this.attributeValue = attributeValue;}
-    public long getProductID() {return productID;}
-    public void setProductID(long productID) {this.productID = productID;}
+    public Product getProduct() {return product;}
+    public void setProduct(Product product) {this.product = product;}
 }

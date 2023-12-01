@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="Category")
@@ -14,6 +15,8 @@ public class Category {
     private String categoryName;
     private String categoryDescription;
     private String parentCategory;
+    @OneToOne
+    @JoinColumn(name = "category_image_id")
     private String categoryImageURL;
 
     public Category(String categoryName, String categoryDescription, String parentCategory, String categoryImageURL) {

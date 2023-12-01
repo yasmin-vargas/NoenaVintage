@@ -1,4 +1,4 @@
 package Repository;
 
-public class ImageData {
+public interface ImageData {
 }

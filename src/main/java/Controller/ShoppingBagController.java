@@ -1,6 +1,6 @@
 package Controller;
-import Model.StockItem;
-import Repository.StockItemData;
+import Model.Product;
+import Repository.ProductData;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,41 +24,39 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
     private final static BigDecimal SHIPPING_COST = new BigDecimal("7.95"); // Defines a constant shipping cost in EUR
     private static Logger log = LoggerFactory.getLogger(ShoppingBagController.class);
     @Autowired
-    private StockItemData stockItemData;
+    private ProductData productData;
 
     @PostMapping("/add-to-bag")
     // Adds StockItems to ShoppingBag
-    public void addToBag(@RequestBody StockItem stockItem) {
-        // Save the BagItem to the repository
-        stockItemData.save(stockItem); // adds the now converted "bagItem" to the ShoppingBag
+    public void addToBag(@RequestBody Product product) {
+        productData.save(product);
     }
     @DeleteMapping("/remove-from-bag")
     // Removes BagItem to ShoppingBag
-    public void removeFromBag(@RequestBody StockItem stockItem) {
-        if (stockItem != null) { //Find and remove StockItem from ShoppingBag (only when there is a stockItem to remove, when it's not null)
-            // Delete the StockItem from the repository
-            stockItemData.deleteByStockID(stockItem.getStockID());
+    public void removeFromBag(@RequestBody Product product) {
+        if (product != null) { //Find and remove product from ShoppingBag (only when there is a product to remove, when it's not null)
+            productData.deleteByProductID(product.getProductID()); // Delete the product from the repository
         }
     }
     @PutMapping("/update-stockQty")
     // The added StockItems in ShoppingBag are already converted to bagItems, so no need to do it again.
     public void updateStockQty(@RequestBody Map<String, Object> updateInfo) {
         // Extract stockItem and stockQty from the request body
-        Long stockID = (Long) updateInfo.get("StockID");
-        Integer stockQty = (Integer) updateInfo.get("StockQty");
+        Long productID = (Long) updateInfo.get("ProductID");
+        Integer productQty = (Integer) updateInfo.get("ProductQty");
 
         // Find the stockItem in the StockItemData repository
-        Optional<StockItem> optionalStockItem = stockItemData.findByStockID(stockID);
+        Optional<Product> optionalStockItem = productData.findByProductID(productID);
         if (optionalStockItem.isPresent()) {
-            StockItem stockItem = optionalStockItem.get();
-            if (stockQty != null && stockQty > 0) {
-                stockItem.setStockQty(stockQty);
-                stockItemData.save(stockItem);  // Save the updated StockItem to the repository
+            Product product = optionalStockItem.get();
+            if (productQty != null && productQty > 0) {
+                product.setProductQty(productQty);
+                productData.save(product);  // Save the updated Product to the repository
             } else {
-                removeFromBag(stockItem);
+                removeFromBag(product);
             }
-        } else {  // Handle the case when the StockItem with the given stockID is not found
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "StockItem not found with stockID: " + stockID);
+        } else {  // Handle the case when the Product with the given productID/SKU nr. is not found
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with productID: " + productID);
         }
     }
 
@@ -70,8 +68,8 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
     public BigDecimal getTotalAmount() {
         BigDecimal totalAmount = BigDecimal.valueOf(0.0); // Initialize variable "totalAmount" to 0.0
         // Iterate over bag items from the repository
-        for (StockItem stockItem : stockItemData.findAll()) {
-            BigDecimal itemTotal = stockItem.getStockPrice().multiply(BigDecimal.valueOf(stockItem.getStockQty()));
+        for (Product product : productData.findAll()) {
+            BigDecimal itemTotal = product.getProductPrice().multiply(BigDecimal.valueOf(product.getProductQty()));
             totalAmount = totalAmount.add(itemTotal);
         }
         return totalAmount;
@@ -80,27 +78,28 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
     @GetMapping("/bag-items")
     // Method to get the BagItems in the ShoppingBag
     public List<Map<String, Object>> getBagItems() {
-        List<Map<String, Object>> stockItemDetails = new ArrayList<>();
-        List<StockItem> stockItems = stockItemData.findAll();
-        if (stockItems.isEmpty()) {
+        List<Map<String, Object>> productDetails = new ArrayList<>();
+        List<Product> products = productData.findAll();
+        if (products.isEmpty()) {
             // Log a message or perform appropriate actions for an empty bag
             log.info("Your shopping bag has no products yet. Continue Shopping!");
         } else {
-            // Convert StockItems to a format suitable for JSON response
-            stockItemDetails = stockItems.stream()
+            // Convert Products to a format suitable for JSON response
+            productDetails = products.stream()
                     .map(bagItem -> {
                         Map<String, Object> map = new HashMap<>();
                         map.put("productName", bagItem.getProductName());
                         map.put("productBrand", bagItem.getProductBrand());
-                        map.put("stockPrice", bagItem.getStockPrice());
-                        map.put("stockColour", bagItem.getStockColour());
-                        map.put("stockSize", bagItem.getStockSize());
-                        map.put("stockQty", bagItem.getStockQty());
+                        map.put("productDescription", bagItem.getProductDescription());
+                        map.put("productPrice", bagItem.getProductPrice());
+                        map.put("productColour", bagItem.getProductColour());
+                        map.put("productSize", bagItem.getProductSize());
+                        map.put("productQty", bagItem.getProductQty());
                         return map;
                     })
                     .collect(Collectors.toList());
         }
-        return stockItemDetails;
+        return productDetails;
     }
 }
 

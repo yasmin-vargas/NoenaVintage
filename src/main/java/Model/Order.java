@@ -28,12 +28,12 @@ public class Order {
     @JoinColumn(name = "addressID")
     private long addressID;
 
-    private ArrayList<StockItem> selectedProducts; //Declare the ArrayList as a Class field with Product objects
+    private ArrayList<Product> selectedProducts; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA
     }
 
     //Order Constructor
-    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long addressID, ArrayList<StockItem> selectedProducts){
+    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long addressID, ArrayList<Product> selectedProducts){
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
@@ -56,7 +56,7 @@ public class Order {
     public void setUserID(long userID) {this.userID = userID;}
     public long getAddressID() {return addressID;}
     public void setAddressID(long billingAddressID) {this.addressID = addressID;}
-    public List<StockItem> getSelectedProducts() {return selectedProducts;}
-    public void setSelectedProducts(ArrayList<StockItem> selectedProducts) {this.selectedProducts = selectedProducts;}
+    public List<Product> getSelectedProducts() {return selectedProducts;}
+    public void setSelectedProducts(ArrayList<Product> selectedProducts) {this.selectedProducts = selectedProducts;}
 }
 

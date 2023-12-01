@@ -1,10 +1,7 @@
 package controller;
-import Model.StockItem;
+import Model.Product;
 import Model.WishList;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/wishlist")
@@ -16,14 +13,14 @@ public class WishListController {
 
     @PostMapping("/add-to-wishlist")
     // Adds stockItems to WishList
-    public void addToWishList (StockItem stockItem){
-        wishList.getWishListItems().add(stockItem);
+    public void addToWishList (Product product){
+        wishList.getWishListItems().add(product);
     }
 
     @DeleteMapping("/remove-from-wishlist")
     //Removes stockItems from WishList
-    public void removeFromWishList (StockItem stockItem){
-        if (stockItem != null)
-            wishList.getWishListItems().remove(stockItem);
+    public void removeFromWishList (Product product){
+        if (product != null)
+            wishList.getWishListItems().remove(product);
     }
 }

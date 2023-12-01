@@ -1,5 +1,6 @@
 package Repository;
 import java.util.List;
+import java.util.Optional;
 import Model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,5 +15,7 @@ public interface ProductData extends JpaRepository<Product, Long>{
     List<Product> findAllByOrderByProductPriceAsc();
     List<Product> findAllByOrderByProductPriceDesc();
     List<Product> findAllByOrderByProductDateDesc();
+    Optional<Product> findByProductID(long productID);
+    Optional<Product> deleteByProductID(long productID);
 
 }

@@ -1,7 +1,7 @@
 package Controller;
 import Model.Order;
 import Model.OrderStatusEnum;
-import Model.StockItem;
+import Model.Product;
 import Repository.OrderData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class CheckoutController {
     @Autowired
     private OrderData orderData;
     @Autowired
-    private List<StockItem> stockItems;
+    private List<Product> products;
     @Autowired
     private ShoppingBagController shoppingBagController;
     @GetMapping("/checkoutsummary")
@@ -37,8 +37,8 @@ public class CheckoutController {
     @GetMapping("/total-amount")
     public BigDecimal getTotalAmount() {
         BigDecimal totalAmount = BigDecimal.valueOf(0.0); // Initialize variable "totalAmount" to 0.0
-        for (StockItem stockItem : stockItems) {
-            BigDecimal itemTotal = stockItem.getStockPrice().multiply(BigDecimal.valueOf(stockItem.getStockQty()));
+        for (Product product : products) {
+            BigDecimal itemTotal = product.getProductPrice().multiply(BigDecimal.valueOf(product.getProductQty()));
             totalAmount = totalAmount.add(itemTotal);
         }
         return totalAmount;

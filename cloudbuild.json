@@ -1,0 +1,19 @@
+{
+  "name": "NoenaVintage",
+  "version": "1.0.0",
+  "dependencies": {
+  },
+  "steps": [
+    {
+      "name": "noenavintagedk.appspot.com",
+      "entrypoint": "src/main/java/com.noenavintage/app/NoenaVintageApp",
+      "args": [
+        "-c",
+        "gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy"
+      ]
+    }
+  ],
+  "timeout": "1600s"
+}
+
+gcloud builds submit --region=
