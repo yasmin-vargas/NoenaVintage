@@ -19,7 +19,7 @@ public class Variant extends Product{
     private String variantColour;
     private String variantSize;
     private BigDecimal variantPrice;
-    private int stockQty;
+    private int variantQtyInStock;
     @OneToOne
     @JoinColumn(name = "main_image_id")
     private Image variantImage;   //Main image
@@ -28,13 +28,13 @@ public class Variant extends Product{
     public Variant() {  // Default constructor necessary for JPA entities
     }
 
-    public Variant(long variantID, String variantName, BigDecimal variantPrice, String variantColour, String variantSize, int stockQty) {
+    public Variant(long variantID, String variantName, String variantColour, String variantSize, BigDecimal variantPrice, int variantQtyInStock) {
         this.variantID = variantID;
         this.variantName = variantName;
         this.variantColour = variantColour;
         this.variantSize = variantSize;
         this.variantPrice = variantPrice;
-        this.stockQty = stockQty;
+        this.variantQtyInStock = variantQtyInStock;
     }
 
     // Getters and setters

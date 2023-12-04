@@ -26,6 +26,25 @@ public class UserController {
         Optional<User> userOptional = userData.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    // Search
+    @GetMapping("/search")
+    public ResponseEntity<Optional<User>> searchUsers(
+            @RequestParam(name = "userName", required = false) String userName,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "phone", required = false) String phone) {
+        if (userName != null) {
+            Optional<User> user = userData.findByUserName(userName);
+            return ResponseEntity.ok(user);
+        } else if (email != null) {
+            Optional<User> user = userData.findByEmail(email);
+            return ResponseEntity.ok(user.isPresent() ? Optional.of(user.get()) : Optional.empty());
+        } else if (phone != null) {
+            Optional<User> user = userData.findByPhone(phone);
+            return ResponseEntity.ok(user.isPresent() ? Optional.of(user.get()) : Optional.empty());
+        } else {
+            return ResponseEntity.badRequest().body(Optional.empty());
+        }
+    }
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         Optional<User> existingUserOptional = userData.findById(id);
@@ -47,26 +66,6 @@ public class UserController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
-        }
-    }
-
-    // Search
-    @GetMapping("/search")
-    public ResponseEntity<Optional<User>> searchUsers(
-            @RequestParam(name = "userName", required = false) String userName,
-            @RequestParam(name = "email", required = false) String email,
-            @RequestParam(name = "phone", required = false) String phone) {
-        if (userName != null) {
-            Optional<User> user = userData.findByUserName(userName);
-            return ResponseEntity.ok(user);
-        } else if (email != null) {
-            Optional<User> user = userData.findByEmail(email);
-            return ResponseEntity.ok(user.isPresent() ? Optional.of(user.get()) : Optional.empty());
-        } else if (phone != null) {
-            Optional<User> user = userData.findByPhone(phone);
-            return ResponseEntity.ok(user.isPresent() ? Optional.of(user.get()) : Optional.empty());
-        } else {
-            return ResponseEntity.badRequest().body(Optional.empty());
         }
     }
 }

@@ -12,33 +12,28 @@ import java.sql.Timestamp;
 @Table(name="Return")
 public class Return {
     @Id
-    private long returnId;
-
+    private long returnID;
     @ManyToOne
     @JoinColumn(name = "orderNumber")
     private Order returnfromOrder;
     private Timestamp returnDate;
     private String returnReason;
-
-    public Return() {
-        // Default constructor required by JPA
+    public Return() {  // Default constructor required by JPA
     }
-
-    public Return(long returnId, Order returnfromOrder, Timestamp returnDate, String returnReason) {
-        this.returnId = returnId;
+    public Return(long returnID, Order returnfromOrder, Timestamp returnDate, String returnReason) {
+        this.returnID = returnID;
         this.returnfromOrder = returnfromOrder;
         this.returnDate = returnDate;
         this.returnReason = returnReason;
-        // Initialize other return-specific attributes as needed
     }
 
     // Getters and setters
-    public long getReturnId() { return returnId; }
-    public void setReturnId(long returnId) { this.returnId = returnId; }
-    public Order getReturnfromOrder() { return returnfromOrder; }
-    public void setReturnfromOrder(Order returnfromOrder) { this.returnfromOrder = returnfromOrder; }
-    public Timestamp getReturnDate() { return returnDate; }
-    public void setReturnDate(Timestamp returnDate) { this.returnDate = returnDate; }
-    public String getReturnReason() { return returnReason; }
-    public void setReturnReason(String returnReason) { this.returnReason = returnReason; }
+    public long getReturnID() { return returnID;}
+    public void setReturnID(long returnID) { this.returnID = returnID;}
+    public Order getReturnfromOrder() { return returnfromOrder;}
+    public void setReturnfromOrder(Order returnfromOrder) { this.returnfromOrder = returnfromOrder;}
+    public Timestamp getReturnDate() { return returnDate;}
+    public void setReturnDate(Timestamp returnDate) { this.returnDate = returnDate;}
+    public String getReturnReason() { return returnReason;}
+    public void setReturnReason(String returnReason) { this.returnReason = returnReason;}
 }

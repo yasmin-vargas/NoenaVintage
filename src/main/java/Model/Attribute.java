@@ -4,7 +4,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import Model.Product;
 
 @Entity
 @Table(name="Attribute")
@@ -15,15 +14,17 @@ public class Attribute {
     private String attributeType;
     private String attributeValue;
     private Product product;
+    private Variant variant;
     public Attribute() {  // No-argument constructor
     }
 
     // Product Constructor
-    public Attribute(long attributeID, String attributeType, String attributeValue, Product product) {
+    public Attribute(long attributeID, String attributeType, String attributeValue, Product product, Variant variant) {
         this.attributeID = attributeID;
         this.attributeType = attributeType;
         this.attributeValue = attributeValue;
         this.product = product;
+        this.variant = variant;
     }
 
     // Getters and setters
@@ -35,4 +36,6 @@ public class Attribute {
     public void setAttributeValue(String attributeValue) {this.attributeValue = attributeValue;}
     public Product getProduct() {return product;}
     public void setProduct(Product product) {this.product = product;}
+    public Variant getVariant() {return variant;}
+    public void setVariant(Variant variant) {this.variant = variant;}
 }

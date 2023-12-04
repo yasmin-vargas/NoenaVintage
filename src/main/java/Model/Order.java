@@ -5,7 +5,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
@@ -22,11 +21,11 @@ public class Order {
     private OrderStatusEnum orderStatus;
     @ManyToOne
     @JoinColumn(name = "userID")
-    private long userID;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "addressID")
-    private long addressID;
+    private Address address;
 
     private ArrayList<Product> selectedProducts; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA

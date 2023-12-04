@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import Model.Order;
+import Model.User;
+import Model.ShoppingBag;
+import Repository.ShoppingBagData;
+import Repository.UserData;
 import Model.Product;
 import Model.OrderStatusEnum;
 import Repository.OrderData;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @RestController
@@ -43,15 +45,21 @@ public class OrderController {
         return ResponseEntity.ok(orderHistory);
     }
     // Method to create new order and add it to the orderList when the customer places an order
-    @PostMapping("/addOrder")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        // Set the initial status to "Pending" or "Processing"
+    @PostMapping("/createOrder")
+    public ResponseEntity<Order> createOrderFromBag(@RequestBody User user) {
+        ShoppingBag shoppingBag = ShoppingBagData.findByUser(user);
+        // Create a new order
+        Order order = new Order();
+        order.setUser(user);
+        // Add products from the shopping bag to the order
+        for (Product product : ShoppingBagController.getBagItems()) {
+            order.addProduct(product);
+        }
+        // Set the initial orderstatus to "Confirmed" (cause we are not dealing with payment)
         order.setOrderStatus(OrderStatusEnum.CONFIRMED);
         // Save the order to the database
-        Order createdOrder = orderData.save(order);
-        // Assuming you have a method to add the order to the orderList
-        orderData.addNewOrder(createdOrder);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+        orderData.save(order);
+        return order;
     }
 
     @PutMapping("/{orderNumber}")

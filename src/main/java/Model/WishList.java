@@ -13,7 +13,7 @@ public class WishList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long wishListID;
     long userID;
-    private List<Product> wishList; // Declare a wishlist of stockItems
+    private List<Product> wishList; // Declare a wishlist of products
     public WishList() {  // Default constructor required by JPA
     }
 
