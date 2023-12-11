@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.noenavintage</groupId>
-    <artifactId>NoenaVintageApp</artifactId>
+    <artifactId>NoenaVintage</artifactId>
     <version>1.0.0</version>
     <name>NoenaVintageApp</name>
     <description>Spring Boot application for Noena Vintage</description>
