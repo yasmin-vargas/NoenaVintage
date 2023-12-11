@@ -35,6 +35,7 @@ public class Product{
     @OneToMany(mappedBy = "product")
     private Set<Image> galleryImages = new HashSet<>();  //Gallery
     private Image thumbnailURL;
+    private int bagItemQty;
 
     // No-argument constructor
     public Product() {
@@ -138,6 +139,8 @@ public class Product{
     public void setThumbnailURL(Image thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
+    public int getBagItemQty() {return bagItemQty;}
+    public void setBagItemQty(int bagItemQty) {this.bagItemQty = bagItemQty;}
 }
 
 

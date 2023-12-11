@@ -5,7 +5,7 @@
   },
   "steps": [
     {
-      "name": "noenavintagedk.appspot.com",
+      "name": "noenavintagedk.ew.r.appspot.com",
       "entrypoint": "src/main/java/com.noenavintage/app/NoenaVintageApp",
       "args": [
         "-c",

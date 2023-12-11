@@ -1,5 +1,8 @@
 package Controller;
 import Model.Product;
+import Model.User;
+import Model.ShoppingBag;
+import Model.BagItem;
 import Repository.ProductData;
 import Repository.ShoppingBagData;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,92 +19,139 @@ import java.util.Map;
 import java.util.HashMap;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Collections;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import java.util.Objects;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 
 @RestController
-@RequestMapping("/api/shopping-bag")
+@RequestMapping("/shoppingbag")
 public class ShoppingBagController {  //Shopping Bag Controller Constructor
     @Autowired
     private ShoppingBagData shoppingBagData;
-    private final static BigDecimal SHIPPING_COST = new BigDecimal("7.95"); // Defines a constant shipping cost in EUR
-    private static Logger log = LoggerFactory.getLogger(ShoppingBagController.class);
     @Autowired
     private ProductData productData;
+    private final static BigDecimal SHIPPING_COST = new BigDecimal("7.95"); // Defines as example constant shipping cost in EUR
+    private static Logger log = LoggerFactory.getLogger(ShoppingBagController.class);
+
+    @GetMapping("/bagitems")
+    // Method to get the BagItems in the ShoppingBag
+    public List<BagItem> getBagItems(@RequestParam Long userID) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        if (shoppingBag != null) {
+            List<BagItem> bagItems = shoppingBag.getBagItems();
+            if (!bagItems.isEmpty()) {
+                return bagItems;
+            } else {
+                log.info("Your shopping bag has no products yet. Continue Shopping!");
+            }
+        } else {
+            log.info("Shopping bag not found for userID: {}", userID);
+        }
+        return Collections.emptyList(); // Return an empty list if there are no bag items or shopping bag not found
+    }
 
     // Get shipping cost
+    @GetMapping("/shippingcost")
     public BigDecimal getShippingCost() {return SHIPPING_COST;}
 
-    // Method to calculate getTotalAmount() bagItemPrice * bagItemQuantity
-    @GetMapping("/total-amount")
-    public BigDecimal getTotalAmount() {
-        BigDecimal totalAmount = BigDecimal.valueOf(0.0); // Initialize variable "totalAmount" to 0.0
-        // Iterate over bag items from the repository
-        for (Product product : productData.findAll()) {
-            BigDecimal itemTotal = product.getProductPrice().multiply(BigDecimal.valueOf(product.getProductQty()));
+    @GetMapping("/totalamount")
+    public BigDecimal getTotalAmount(@RequestParam Long userID) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        if (shoppingBag != null) {
+            return calculateTotalAmount(shoppingBag);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping bag not found for userID: " + userID);
+        }
+    }
+
+    // Helper method to calculate getTotalAmount() bagItemPrice * bagItemQuantity
+    private BigDecimal calculateTotalAmount(ShoppingBag shoppingBag) {
+        BigDecimal totalAmount = BigDecimal.valueOf(0.0);
+        for (BagItem bagItem : shoppingBag.getBagItems()) {
+            BigDecimal itemTotal = bagItem.getProduct().getProductPrice()
+                    .multiply(BigDecimal.valueOf(bagItem.getBagItemQty()));
             totalAmount = totalAmount.add(itemTotal);
         }
         return totalAmount;
     }
-    @GetMapping("/bag-items")
-    // Method to get the BagItems in the ShoppingBag
-    public List<Map<String, Object>> getBagItems(@RequestParam Long userId) {
-        List<Map<String, Object>> productDetails = new ArrayList<>();
 
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userId);
+    @PostMapping("/addtobag")
+    // Adds Products or Variants to ShoppingBag
+    public void addToBag(@RequestParam Long userID, @RequestBody Map<String, Object> request) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        if(shoppingBag !=null) {
+            Product product = (Product) request.get("product");
+            int bagItemQty = (int) request.get("bagItemQty");
 
-        if (shoppingBag != null && !shoppingBag.getProducts().isEmpty()) {
-            productDetails = shoppingBag.getProducts().stream()
-                    .map(product -> {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("productName", product.getProductName());
-                        map.put("productBrand", product.getProductBrand());
-                        map.put("productDescription", product.getProductDescription());
-                        map.put("productPrice", product.getProductPrice());
-                        map.put("productColour", product.getProductColour());
-                        map.put("productSize", product.getProductSize());
-                        map.put("productQty", product.getProductQty());
-                        return map;
-                    })
-                    .collect(Collectors.toList());
-        } else {
-            log.info("Your shopping bag has no products yet. Continue Shopping!");
-        }
-        return productDetails;
-    }
-    @PostMapping("/add-to-bag")
-    // Adds StockItems to ShoppingBag
-    public void addToBag(@RequestBody Product product) {
-        productData.save(product);
-    }
-    @PutMapping("/update-bagItemQty")
-    public void updateBagItemQty(@RequestBody Map<String, Object> updateInfo) {
-        // Extract productID and bagItemQty from the request body
-        Long productID = (Long) updateInfo.get("ProductID");
-        Integer bagItemQty = (Integer) updateInfo.get("BagItemQty");
-
-        // Find the product in the ProductData repository
-        Optional<Product> optionalProduct = shoppingBag.getProducts().stream()
-                .filter(product -> product.getProductID().equals(productID))
-                .findFirst();
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            if (bagItemQty != null && bagItemQty > 0) {
-                product.setBagItemQty(bagItemQty);
+            if (product != null && bagItemQty > 0) {
+                BagItem bagItem = new BagItem(shoppingBag, product, bagItemQty);
+                shoppingBag.getBagItems().add(bagItem);
+                shoppingBagData.save(shoppingBag);
             } else {
-                removeFromBag(product);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid product or quantity.");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found in the shopping bag with productID: " + productID);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping bag not found for userID: " + userID);
         }
-    }
-    @DeleteMapping("/remove-from-bag")
-    // Removes BagItem to ShoppingBag
-    public void removeFromBag(@RequestBody Product product) {
-        if (product != null) { //Find and remove product from ShoppingBag (only when there is a product to remove, when it's not null)
-            productData.deleteByProductID(product.getProductID()); // Delete the product from the repository
+}
+
+    @PutMapping("/updateBagItemQty")
+    public void updateBagItemQty(@RequestParam Long userID, @RequestBody Map<String, Object> bagItem) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        if (shoppingBag != null) {
+            // Extract productID and bagItemQty from the request body
+            Long bagItemID = (Long) bagItem.get("BagItemID");
+            Integer bagItemQty = (Integer) bagItem.get("BagItemQty");
+
+            // Find the BagItem in the ShoppingBag
+            Optional<BagItem> optionalBagItem = shoppingBag.getBagItems().stream()
+                .filter(item -> item.getBagItemID().equals(bagItemID))
+                .findFirst();
+
+            if (optionalBagItem.isPresent()) {
+            BagItem bagItemEntity = optionalBagItem.get();
+               if (bagItemQty != null && bagItemQty > 0) {
+                bagItemEntity.setBagItemQty(bagItemQty);
+                updateTotalBagQty(userID);  // Update totalBagQty based on the changes in bag items with the userID parameter
+               } else {
+                removeFromBag(userID, bagItemID);
+               }
+            } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found in the shopping bag with bagItemID: " + bagItemID);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping bag not found for userID: " + userID);
         }
     }
 
+    // Method to update totalBagQty based on the bagItems
+    private void updateTotalBagQty(Long userID) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        int totalBagQty = shoppingBag.getBagItems().stream()
+                .mapToInt(BagItem::getBagItemQty)
+                .sum();
+        shoppingBag.setTotalBagQty(totalBagQty);
+    }
+
+    @DeleteMapping("/removefrombag")
+    // Removes BagItem to ShoppingBag
+    public void removeFromBag(@RequestParam Long userID, @RequestParam Long bagItemID) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        if (shoppingBag != null) { //Find and remove product from ShoppingBag (only when there is a product to remove, when it's not null)
+            shoppingBag.getBagItems().removeIf(bagItem -> Objects.equals(bagItem.getBagItemID(), bagItemID));
+            shoppingBagData.save(shoppingBag); // Save the updated shopping bag
+            updateTotalBagQty(userID); // Update totalBagQty after removing the product
+        }
+    }
+    public void clearShoppingBag(Long userID) {
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        if (shoppingBag != null) {
+            shoppingBag.getBagItems().clear();
+            shoppingBagData.save(shoppingBag);
+        }
+    }
 }
 

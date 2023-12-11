@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Collections;
 import java.util.Optional;
+@CrossOrigin(origins = "https://192.168.8.9:8081")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserData userData;
@@ -17,14 +17,21 @@ public class UserController {
     public UserController(UserData userData) {
         this.userData = userData;
     }
-    @GetMapping("/allusers")
+    @GetMapping("/getall")
     public List<User> getAllUsers() {
         return userData.findAll();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/get{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> userOptional = userData.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Endpoint to register a new user
+    @PostMapping("/post")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userData.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
     // Search
     @GetMapping("/search")
@@ -45,7 +52,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(Optional.empty());
         }
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         Optional<User> existingUserOptional = userData.findById(id);
         if (existingUserOptional.isPresent()) {
@@ -57,7 +64,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userID) {
         Optional<User> existingUserOptional = userData.findByUserID(userID);
         if (existingUserOptional.isPresent()) {

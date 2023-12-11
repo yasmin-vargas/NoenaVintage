@@ -22,24 +22,26 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "billingAddressID", nullable = false)
+    private Address billingAddress;
 
     @ManyToOne
-    @JoinColumn(name = "addressID")
-    private Address address;
-
-    private ArrayList<Product> selectedProducts; //Declare the ArrayList as a Class field with Product objects
+    @JoinColumn(name = "shippingAddressID")
+    private Address shippingAddress;
+    @ManyToMany
+    private List<OrderItem> orderItems; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA
+        this.orderItems = new ArrayList<>();
     }
 
     //Order Constructor
-    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus,long userID, long addressID, ArrayList<Product> selectedProducts){
+    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus, List<OrderItem> orderItems){
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.orderStatus = orderStatus;
-        this.userID = userID;
-        this.addressID = addressID;
-        this.selectedProducts = selectedProducts; //Assign the provided ArrayList to the class field
+        this.orderItems = orderItems;
     }
 
     // Getters and setters
@@ -51,11 +53,14 @@ public class Order {
     public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
     public OrderStatusEnum getOrderStatus() {return orderStatus;}
     public void setOrderStatus(OrderStatusEnum orderStatus) {this.orderStatus = orderStatus;}
-    public long getUserID() {return userID;}
-    public void setUserID(long userID) {this.userID = userID;}
-    public long getAddressID() {return addressID;}
-    public void setAddressID(long billingAddressID) {this.addressID = addressID;}
-    public List<Product> getSelectedProducts() {return selectedProducts;}
-    public void setSelectedProducts(ArrayList<Product> selectedProducts) {this.selectedProducts = selectedProducts;}
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
+    public Address getBillingAddress() {return billingAddress;}
+    public void setBillingAddress(Address billingAddress) {this.billingAddress = billingAddress;}
+    public Address getShippingAddress() {return shippingAddress;}
+    public void setShippingAddress(Address shippingAddress) {this.shippingAddress = shippingAddress;}
+    public List<OrderItem> getOrderItems() {return orderItems;}
+    public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
+
 }
 

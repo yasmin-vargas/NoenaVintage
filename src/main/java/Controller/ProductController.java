@@ -9,30 +9,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Collections;
 import java.util.Optional;
-
+@CrossOrigin(origins = "https://192.168.8.9:8081")
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductController {
     private ProductData productData;
     @Autowired
     public ProductController(ProductData productData) {
         this.productData = productData;
     }
-    @GetMapping
+    @GetMapping("/GetAllProducts")
     public List<Product> getAllProducts() {
         return productData.findAll();
     }
-    @GetMapping("/{productID}")
+    @GetMapping("/get{productID}")
     public ResponseEntity<Product> getProductById(@PathVariable Long productID) {
         Optional<Product> productOptional = productData.findById(productID);
         return productOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productData.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
-    @PutMapping("/{productID}")
+    @PutMapping("/update{productID}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productID, @RequestBody Product updatedProduct) {
         Optional<Product> existingProductOptional = productData.findById(productID);
         if (existingProductOptional.isPresent()) {
@@ -50,7 +50,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/{productID}")
+    @DeleteMapping("/delete{productID}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productID) {
         Optional<Product> existingProductOptional = productData.findById(productID);
         if (existingProductOptional.isPresent()) {
@@ -76,7 +76,7 @@ public class ProductController {
     }
 
     // Placeholder for search method
-    @GetMapping("/searchProduct")
+    @GetMapping("/search")
     public List<Product> searchProducts(
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "brand", required = false) String brand,
