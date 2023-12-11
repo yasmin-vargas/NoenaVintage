@@ -6,7 +6,7 @@
   "steps": [
     {
       "name": "noenavintagedk.ew.r.appspot.com",
-      "entrypoint": "src/main/java/com.noenavintage/app/NoenaVintageApp",
+      "entrypoint": "src/main/java/com.noenavintage.app/NoenaVintageApp",
       "args": [
         "-c",
         "gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy"
