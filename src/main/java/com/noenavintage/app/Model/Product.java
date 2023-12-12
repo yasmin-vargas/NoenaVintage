@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name="Product")
@@ -30,11 +30,8 @@ public class Product{
     private String supplierCode;
     private String productImageURL;
     private String thumbnailURL;
-    @ManyToMany
-    @JoinTable(name = "ProductImage",
-            joinColumns = @JoinColumn(name = "productID"),
-            inverseJoinColumns = @JoinColumn(name = "imageID"))
-    private Set<Image> images;
+    @OneToMany(mappedBy = "product")
+    private List<ProductImage> productImages;
     public Product() {   // No-argument constructor
     }
 
@@ -124,6 +121,13 @@ public class Product{
     public String getThumbnailURL(){return thumbnailURL;}
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
+    }
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(List<ProductImage> productImages) {
+        this.productImages = productImages;
     }
 }
 

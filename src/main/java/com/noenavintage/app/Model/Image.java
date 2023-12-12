@@ -5,7 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.List;
 @Entity
 @Table(name="Image")
 public class Image {
@@ -13,11 +13,11 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imageID;
     private String imageURL;
-    @ManyToMany(mappedBy = "images")
-    private Set<Product> products;
+    @OneToMany(mappedBy = "image")
+    private List<ProductImage> productImages;
 
-    @ManyToMany(mappedBy = "images")
-    private Set<Variant> variants;
+    @OneToMany(mappedBy = "image")
+    private List<VariantImage> variantImages;
 
     public Image() {  // Default constructor
     }
