@@ -2,6 +2,8 @@ package com.noenavintage.app.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 import java.math.BigDecimal;
@@ -15,16 +17,19 @@ public class ShoppingBag {
     private User user;
     private int totalItemQty;
     private BigDecimal totalAmount;
+    private Timestamp bagDate;
     @OneToMany(mappedBy = "shoppingBag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BagItem> bagItems = new ArrayList<>();
-    public ShoppingBag() {  // Default constructor for JPA or other frameworks
+    public ShoppingBag() {  // Empty constructor for JPA
     }
 
     // Constructor
-    public ShoppingBag(User user, int totalItemQty, BigDecimal totalAmount) {
+    public ShoppingBag(User user, int totalItemQty, BigDecimal totalAmount, Timestamp bagDate, List<BagItem> bagItems) {
         this.user = user;
-        this.totalItemQty = 0;
-        this.totalAmount = BigDecimal.ZERO;
+        this.totalItemQty = totalItemQty;
+        this.totalAmount = totalAmount;
+        this.bagDate = bagDate;
+        this.bagItems = (bagItems != null) ? bagItems : new ArrayList<>();
     }
 
     //Getters and setters
@@ -36,6 +41,8 @@ public class ShoppingBag {
     public void setTotalItemQty(int totalItemQty) {this.totalItemQty = totalItemQty;}
     public BigDecimal getTotalAmount() {return totalAmount;}
     public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
+    public Timestamp getBagDate() {return bagDate;}
+    public void setBagDate(Timestamp bagDate) {this.bagDate = bagDate;}
     public List<BagItem> getBagItems() {return bagItems;}
     public void setBagItems(List<BagItem> bagItems) {this.bagItems = bagItems;}
 }

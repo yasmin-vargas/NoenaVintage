@@ -4,23 +4,19 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "OrderItem")
 public class OrderItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemID;
-
     @ManyToOne
     @JoinColumn(name = "orderNumber")
     private Order order;
-
     @ManyToOne
     @JoinColumn(name = "bagItemID")
     private BagItem bagItem;
 
-    // Constructor
-    public OrderItem() {
+    public OrderItem() {  // Constructor
     }
-    // Constructor
+
     public OrderItem(Order order, BagItem bagItem) {
         this.order = order;
         this.bagItem = bagItem;

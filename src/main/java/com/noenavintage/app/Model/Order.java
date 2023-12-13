@@ -29,9 +29,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "shippingAddressID")
     private Address shippingAddress;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems; //Declare the ArrayList as a Class field with Product objects
+    private List<OrderItem> orderItems;
     public Order() {  // Default constructor required by JPA
         this.orderItems = new ArrayList<>();
     }
