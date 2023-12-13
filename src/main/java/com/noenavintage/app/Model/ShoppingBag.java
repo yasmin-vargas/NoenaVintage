@@ -13,7 +13,7 @@ public class ShoppingBag {
     @OneToOne
     @JoinColumn(name = "userID")
     private User user;
-    private int totalBagQty;
+    private int totalItemQty;
     private BigDecimal totalAmount;
     @OneToMany(mappedBy = "shoppingBag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BagItem> bagItems = new ArrayList<>();
@@ -21,9 +21,9 @@ public class ShoppingBag {
     }
 
     // Constructor
-    public ShoppingBag(User user) {
+    public ShoppingBag(User user, int totalItemQty, BigDecimal totalAmount) {
         this.user = user;
-        this.totalBagQty = 0;
+        this.totalItemQty = 0;
         this.totalAmount = BigDecimal.ZERO;
     }
 
@@ -32,8 +32,8 @@ public class ShoppingBag {
     public void setBagID(Long bagID) {this.bagID = bagID;}
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;}
-    public int getTotalBagQty() {return totalBagQty;}
-    public void setTotalBagQty(int totalBagQty) {this.totalBagQty = totalBagQty;}
+    public int getTotalItemQty() {return totalItemQty;}
+    public void setTotalItemQty(int totalItemQty) {this.totalItemQty = totalItemQty;}
     public BigDecimal getTotalAmount() {return totalAmount;}
     public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
     public List<BagItem> getBagItems() {return bagItems;}

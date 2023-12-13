@@ -55,7 +55,7 @@ public class OrderController {
     public ResponseEntity<Order> createOrderFromBag(@RequestBody User user) {
         // Use the existing instance variable
         Long userID = user.getUserID();
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if (shoppingBag != null && !shoppingBag.getBagItems().isEmpty()) {
             Order order = createOrder(user, shoppingBag);
             Order savedOrder = orderData.save(order);

@@ -11,15 +11,14 @@ import java.util.List;
 public class WishList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long wishListID;
-    long userID;
+    private Long wishListID;
+    private long userID;
     private List<Product> wishList; // Declare a wishlist of products
     public WishList() {  // Default constructor required by JPA
     }
 
     // Constructor
-    public WishList(long wishListID, long userID, List<Product> wishList) {
-        this.wishListID = wishListID;
+    public WishList(long userID, List<Product> wishList) {
         this.userID = userID;
         this.wishList = wishList;
     }

@@ -11,12 +11,13 @@ import jakarta.persistence.*;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long categoryID;
+    private Long categoryID;
     private String categoryName;
     private String categoryDescription;
     private String parentCategory;
     private String categoryImageURL;
-
+    public Category() {  // Empty constructor
+    }
     public Category(String categoryName, String categoryDescription, String parentCategory, String categoryImageURL) {
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;

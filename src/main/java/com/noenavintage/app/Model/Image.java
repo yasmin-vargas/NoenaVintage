@@ -11,7 +11,7 @@ import java.util.List;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long imageID;
+    private Long imageID;
     private String imageURL;
     @OneToMany(mappedBy = "image")
     private List<ProductImage> productImages;
@@ -21,8 +21,10 @@ public class Image {
 
     public Image() {  // Default constructor
     }
-    public Image(String imageURL) {
+    public Image(String imageURL, List<ProductImage> productImages, List<VariantImage> variantImages) {
         this.imageURL = imageURL;
+        this.productImages = productImages;
+        this.variantImages = variantImages;
     }
 
     // Getters and setters
@@ -30,10 +32,10 @@ public class Image {
     public void setImageID(long imageID) {this.imageID = imageID;}
     public String getImageURL() {return imageURL;}
     public void setImageURL(String imageURL) {this.imageURL = imageURL;}
-    public Set<Product> getProducts() {return products;}
-    public void setProducts(Set<Product> products) {this.products = products;}
-    public Set<Variant> getVariants() {return variants;}
-    public void setVariants(Set<Variant> variants) {this.variants = variants;}
+    public List<ProductImage> getProductImages() {return productImages;}
+    public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;}
+    public List<VariantImage> getVariantImages() {return variantImages;}
+    public void setVariantImages(List<VariantImage> variantImages) {this.variantImages = variantImages;}
 }
 
 

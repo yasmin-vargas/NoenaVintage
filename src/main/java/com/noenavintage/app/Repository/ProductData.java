@@ -14,7 +14,7 @@ public interface ProductData extends JpaRepository<Product, Long>{
     List<Product> findAllByOrderByProductPriceAsc();
     List<Product> findAllByOrderByProductPriceDesc();
     List<Product> findAllByOrderByProductDateDesc();
-    Optional<Product> findByProductID(long productID);
-    Optional<Product> deleteByProductID(long productID);
+    Optional<Product> findByProductID(Long productID);
+    Optional<Product> deleteByProductID(Long productID);
 
 }

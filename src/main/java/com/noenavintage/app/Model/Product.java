@@ -13,31 +13,27 @@ import java.util.List;
 public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long productID;
+    private Long productID;
     private String categoryName;
     private String productName;
     private String productBrand;
     private String productDescription;
     private String productColour;
     private String productSize;
-    @Column(name = "importPrice", columnDefinition = "DECIMAL(10, 2)")
     private BigDecimal importPrice;
-    @Column(name = "productPrice", columnDefinition = "DECIMAL(10, 2)")
     private BigDecimal productPrice;
-    @Column(name = "discountPrice", columnDefinition = "DECIMAL(10, 2)")
     private BigDecimal discountPrice;
     private int QtyInStock;
     private String supplierCode;
     private String productImageURL;
     private String thumbnailURL;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImages;
     public Product() {   // No-argument constructor
     }
 
     // Product Constructor
-    public Product(long productID, String categoryName, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL){
-        this.productID = productID;
+    public Product(String categoryName, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<ProductImage> productImages){
         this.categoryName = categoryName;
         this.productName = productName;
         this.productBrand = productBrand;
@@ -51,6 +47,7 @@ public class Product{
         this.supplierCode = supplierCode;
         this.productImageURL = productImageURL;
         this.thumbnailURL = thumbnailURL;
+        this.productImages = productImages;
     }
 
     //Getters and setters
@@ -122,13 +119,11 @@ public class Product{
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
-    public List<ProductImage> getProductImages() {
-        return productImages;
-    }
-
-    public void setProductImages(List<ProductImage> productImages) {
-        this.productImages = productImages;
-    }
+    public List<ProductImage> getProductImages() {return productImages;}
+    public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;
+        for (ProductImage productImage : productImages) {
+            productImage.setProduct(this);
+        }}
 }
 
 

@@ -2,8 +2,8 @@ package com.noenavintage.app.Repository;
 import com.noenavintage.app.Model.Order;
 import com.noenavintage.app.Model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 @Repository
 public interface OrderData extends JpaRepository<Order, Long> {
     List<Order> findByUserID(Long userID);

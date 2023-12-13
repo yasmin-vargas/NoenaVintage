@@ -34,7 +34,7 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
     @GetMapping("/bagitems")
     // Method to get the BagItems in the ShoppingBag
     public List<BagItem> getBagItems(@RequestParam Long userID) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if (shoppingBag != null) {
             List<BagItem> bagItems = shoppingBag.getBagItems();
             if (!bagItems.isEmpty()) {
@@ -54,7 +54,7 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
 
     @GetMapping("/totalamount")
     public BigDecimal getTotalAmount(@RequestParam Long userID) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if (shoppingBag != null) {
             return calculateTotalAmount(shoppingBag);
         } else {
@@ -76,7 +76,7 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
     @PostMapping("/addtobag")
     // Adds Products or Variants to ShoppingBag
     public void addToBag(@RequestParam Long userID, @RequestBody Map<String, Object> request) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if(shoppingBag !=null) {
             Product product = (Product) request.get("product");
             int bagItemQty = (int) request.get("bagItemQty");
@@ -95,7 +95,7 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
 
     @PutMapping("/updateBagItemQty")
     public void updateBagItemQty(@RequestParam Long userID, @RequestBody Map<String, Object> bagItem) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if (shoppingBag != null) {
             // Extract productID and bagItemQty from the request body
             Long bagItemID = (Long) bagItem.get("BagItemID");
@@ -124,17 +124,17 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
 
     // Method to update totalBagQty based on the bagItems
     private void updateTotalBagQty(Long userID) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         int totalBagQty = shoppingBag.getBagItems().stream()
                 .mapToInt(BagItem::getBagItemQty)
                 .sum();
-        shoppingBag.setTotalBagQty(totalBagQty);
+        shoppingBag.setTotalItemQty(totalBagQty);
     }
 
     @DeleteMapping("/removefrombag")
     // Removes BagItem to ShoppingBag
     public void removeFromBag(@RequestParam Long userID, @RequestParam Long bagItemID) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if (shoppingBag != null) { //Find and remove product from ShoppingBag (only when there is a product to remove, when it's not null)
             shoppingBag.getBagItems().removeIf(bagItem -> Objects.equals(bagItem.getBagItemID(), bagItemID));
             shoppingBagData.save(shoppingBag); // Save the updated shopping bag
@@ -142,7 +142,7 @@ public class ShoppingBagController {  //Shopping Bag Controller Constructor
         }
     }
     public void clearShoppingBag(Long userID) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserId(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
         if (shoppingBag != null) {
             shoppingBag.getBagItems().clear();
             shoppingBagData.save(shoppingBag);

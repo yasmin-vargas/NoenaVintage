@@ -26,28 +26,22 @@ public class VariantImage {
         this.image = image;
     }
 
-    // Getters and setters...
-
+    // Getters and setters
     public Long getVariantImageID() {
         return variantImageID;
     }
-
     public void setVariantImageID(Long variantImageID) {
         this.variantImageID = variantImageID;
     }
-
     public Variant getVariant() {
         return variant;
     }
-
     public void setVariant(Variant variant) {
         this.variant = variant;
     }
-
     public Image getImage() {
         return image;
     }
-
     public void setImage(Image image) {
         this.image = image;
     }

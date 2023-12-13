@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Table(name="Return")
 public class Return {
     @Id
-    private long returnID;
+    private Long returnID;
     @ManyToOne
     @JoinColumn(name = "orderNumber")
     private Order returnfromOrder;

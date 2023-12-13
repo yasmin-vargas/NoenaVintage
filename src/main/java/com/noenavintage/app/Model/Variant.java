@@ -14,7 +14,7 @@ import jakarta.persistence.*;
 public class Variant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long variantID;
+    private Long variantID;
     private String variantName;
     private String variantColour;
     private String variantSize;
@@ -30,8 +30,7 @@ public class Variant {
     public Variant() {  // Default constructor necessary for JPA entities
     }
 
-    public Variant(long variantID, String variantName, String variantColour, String variantSize, BigDecimal variantPrice, int variantQtyInStock, String variantImageURL, String thumbnailURL) {
-        this.variantID = variantID;
+    public Variant(String variantName, String variantColour, String variantSize, BigDecimal variantPrice, int variantQtyInStock, String variantImageURL, String thumbnailURL) {
         this.variantName = variantName;
         this.variantColour = variantColour;
         this.variantSize = variantSize;

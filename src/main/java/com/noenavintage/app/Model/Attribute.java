@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long attributeID;
+    private Long attributeID;
     private String attributeType;
     private String attributeValue;
     private Product product;

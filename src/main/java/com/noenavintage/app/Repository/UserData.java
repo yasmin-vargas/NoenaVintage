@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserData extends JpaRepository<User, Long> {
-    Optional<User> findByUserID(long userID);
+    Optional<User> findByUserID(Long userID);
     Optional<User> findByUserName(String userName);
     Optional<User> findByEmail(String email);
     Optional<User> findByPhone(String phone);
-    Optional<User> deleteByUserID(long userID);
+    Optional<User> deleteByUserID(Long userID);
 }

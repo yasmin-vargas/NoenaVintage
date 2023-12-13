@@ -14,8 +14,9 @@ import java.sql.Timestamp;
 @Table(name="´Order´")
 public class Order {
     @Id
-    private long orderNumber;  // initializing object variables, that represent attributes of an order
+    private Long orderNumber;  // initializing object variables, that represent attributes of an order
     private Timestamp orderDate;
+    private int itemQty;
     private BigDecimal totalAmount;
     @Enumerated(EnumType.STRING)
     private OrderStatusEnum orderStatus;
@@ -25,22 +26,25 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "billingAddressID", nullable = false)
     private Address billingAddress;
-
     @ManyToOne
     @JoinColumn(name = "shippingAddressID")
     private Address shippingAddress;
-    @ManyToMany
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems; //Declare the ArrayList as a Class field with Product objects
     public Order() {  // Default constructor required by JPA
         this.orderItems = new ArrayList<>();
     }
 
     //Order Constructor
-    public Order(long orderNumber, Timestamp orderDate, BigDecimal totalAmount, OrderStatusEnum orderStatus, List<OrderItem> orderItems){
-        this.orderNumber = orderNumber;
+    public Order(Timestamp orderDate, int itemQty, BigDecimal totalAmount, OrderStatusEnum orderStatus, User user, Address billingAddress, Address shippingAddress, List <OrderItem> orderItems){
         this.orderDate = orderDate;
+        this.itemQty = itemQty;
         this.totalAmount = totalAmount;
         this.orderStatus = orderStatus;
+        this.user = user;
+        this.billingAddress = billingAddress;
+        this.shippingAddress = shippingAddress;
         this.orderItems = orderItems;
     }
 
@@ -49,6 +53,8 @@ public class Order {
     public void setOrderNumber(long orderNumber) {this.orderNumber = orderNumber;}
     public Timestamp getOrderDate() {return orderDate;}
     public void setOrderDate(Timestamp orderDate) {this.orderDate = orderDate;}
+    public int getItemQty() {return itemQty;}
+    public void setItemQty(int itemQty) {this.itemQty = itemQty;}
     public BigDecimal getTotalAmount() {return totalAmount;}
     public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
     public OrderStatusEnum getOrderStatus() {return orderStatus;}
