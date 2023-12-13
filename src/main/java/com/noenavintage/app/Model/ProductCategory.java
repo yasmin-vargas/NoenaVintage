@@ -4,17 +4,14 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "ProductCategory")
 public class ProductCategory {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productCategoryID;
-
     @ManyToOne
     @JoinColumn(name = "productID")
     private Product product;
-
     @ManyToOne
-    @JoinColumn(name = "categoryID")
+    @JoinColumn(name = "categoryName")
     private Category category;
 
     public ProductCategory() {

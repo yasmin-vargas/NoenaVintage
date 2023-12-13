@@ -14,7 +14,13 @@ public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productID;
-    private String categoryName;
+    @ManyToMany
+    @JoinTable(
+            name = "ProductCategory",
+            joinColumns = @JoinColumn(name = "productID"),
+            inverseJoinColumns = @JoinColumn(name = "categoryName")
+    )
+    private List<Category> productCategories;
     private String productName;
     private String productBrand;
     private String productDescription;
@@ -28,13 +34,17 @@ public class Product{
     private String productImageURL;
     private String thumbnailURL;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Variant> variants;
+    @OneToMany(mappedBy = "product")
     private List<ProductImage> productImages;
+    @OneToMany(mappedBy = "product")
+    private List<Attribute> productAttributes;
     public Product() {   // No-argument constructor
     }
 
     // Product Constructor
-    public Product(String categoryName, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<ProductImage> productImages){
-        this.categoryName = categoryName;
+    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<Variant> variants, List<ProductImage> productImages){
+        this.productCategories = productCategories;
         this.productName = productName;
         this.productBrand = productBrand;
         this.productDescription = productDescription;
@@ -47,14 +57,15 @@ public class Product{
         this.supplierCode = supplierCode;
         this.productImageURL = productImageURL;
         this.thumbnailURL = thumbnailURL;
+        this.variants = variants;
         this.productImages = productImages;
     }
 
     //Getters and setters
     public long getProductID(){return productID;}
     public void setProductID(long productID) {this.productID = productID;}
-    public String getCategoryName(){return categoryName;}
-    public void setCategoryName(String categoryName) {this.categoryName = categoryName;}
+    public List<Category> getProductCategory() {return productCategories;}
+    public void setProductCategory(List<Category> productCategories) {this.productCategories = productCategories;}
     public String getProductName(){return productName;}
     public void setProductName(String productName) {this.productName = productName;}
     public String getProductBrand(){
@@ -116,14 +127,13 @@ public class Product{
         this.productImageURL = productImageURL;
     }
     public String getThumbnailURL(){return thumbnailURL;}
-    public void setThumbnailURL(String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
-    }
+    public void setThumbnailURL(String thumbnailURL) {this.thumbnailURL = thumbnailURL;}
+    public List<Variant> getVariants() {return variants;}
+    public void setVariants(List<Variant> variants) {this.variants = variants;}
     public List<ProductImage> getProductImages() {return productImages;}
-    public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;
-        for (ProductImage productImage : productImages) {
-            productImage.setProduct(this);
-        }}
+    public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;}
+    public List<Attribute> getAttributes() {return productAttributes;}
+    public void setAttributes(List<Attribute> productAttributes) {this.productAttributes = productAttributes;}
 }
 
 

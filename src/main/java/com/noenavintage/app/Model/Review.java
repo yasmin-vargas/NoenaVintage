@@ -8,34 +8,29 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewID;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     private String reviewTitle;
     private String reviewContent;
-
     @Column(name = "rating")
     private int rating;   // A numerical rating from 1 to 5 stars
-
-    @Column(name = "review_date")
+    @Column(name = "reviewDate")
     private Timestamp reviewDate;
+    @ManyToOne
+    @JoinColumn(name = "productID")
+    private Product product;
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
     public Review() {  // Default constructor
     }
 
     // Constructor
-    public Review(Product product, User user, String reviewTitle, String reviewContent, int rating, Timestamp reviewDate) {
-        this.product = product;
-        this.user = user;
+    public Review(String reviewTitle, String reviewContent, int rating, Timestamp reviewDate, Product product, User user) {
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
         this.rating = rating;
         this.reviewDate = reviewDate;
+        this.product = product;
+        this.user = user;
     }
 
     // Getters and setters

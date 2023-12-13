@@ -5,6 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.*;
@@ -15,6 +16,9 @@ public class Variant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long variantID;
+    @ManyToOne
+    @JoinColumn(name = "productID")
+    private Product product;
     private String variantName;
     private String variantColour;
     private String variantSize;
@@ -22,15 +26,13 @@ public class Variant {
     private int variantQtyInStock;
     private String variantImageURL;   //Main image
     private String thumbnailURL;
-    @ManyToMany
-    @JoinTable(name = "VariantImage",
-            joinColumns = @JoinColumn(name = "variantID"),
-            inverseJoinColumns = @JoinColumn(name = "imageID"))
-    private Set<Image> images;
+    @OneToMany(mappedBy = "variant")
+    private List<VariantImage> variantImages;
     public Variant() {  // Default constructor necessary for JPA entities
     }
 
-    public Variant(String variantName, String variantColour, String variantSize, BigDecimal variantPrice, int variantQtyInStock, String variantImageURL, String thumbnailURL) {
+    public Variant(Product product, String variantName, String variantColour, String variantSize, BigDecimal variantPrice, int variantQtyInStock, String variantImageURL, String thumbnailURL) {
+        this.product = product;
         this.variantName = variantName;
         this.variantColour = variantColour;
         this.variantSize = variantSize;

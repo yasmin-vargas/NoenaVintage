@@ -5,6 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="Category")
@@ -16,6 +17,12 @@ public class Category {
     private String categoryDescription;
     private String parentCategory;
     private String categoryImageURL;
+    @ManyToMany
+    @JoinTable(
+            name = "ProductCategory",
+            joinColumns = @JoinColumn(name = "categoryName"),
+            inverseJoinColumns = @JoinColumn(name = "productID"))
+    private List<ProductCategory> productCategories;
     public Category() {  // Empty constructor
     }
     public Category(String categoryName, String categoryDescription, String parentCategory, String categoryImageURL) {

@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="Attribute")
@@ -13,14 +14,16 @@ public class Attribute {
     private Long attributeID;
     private String attributeType;
     private String attributeValue;
+    @ManyToOne
+    @JoinColumn(name = "productID")
     private Product product;
+    @ManyToOne
+    @JoinColumn(name = "variantID")
     private Variant variant;
     public Attribute() {  // No-argument constructor
     }
 
-    // Product Constructor
-    public Attribute(long attributeID, String attributeType, String attributeValue, Product product, Variant variant) {
-        this.attributeID = attributeID;
+    public Attribute(String attributeType, String attributeValue, Product product, Variant variant) {
         this.attributeType = attributeType;
         this.attributeValue = attributeValue;
         this.product = product;

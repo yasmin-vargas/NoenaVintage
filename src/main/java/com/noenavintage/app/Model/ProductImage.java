@@ -30,23 +30,18 @@ public class ProductImage {
     public Long getProductImageID() {
         return productImageID;
     }
-
     public void setProductImageID(Long productImageID) {
         this.productImageID = productImageID;
     }
-
     public Product getProduct() {
         return product;
     }
-
     public void setProduct(Product product) {
         this.product = product;
     }
-
     public Image getImage() {
         return image;
     }
-
     public void setImage(Image image) {
         this.image = image;
     }
