@@ -33,8 +33,8 @@ public class LoginController {
         }
     }
     //Register an account
-    @PostMapping("/createuser")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
         User createdUser = userData.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }

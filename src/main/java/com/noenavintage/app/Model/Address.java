@@ -6,7 +6,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressID;
     private String streetAddress;
-    private int postalCode;
+    private int zipCode;
     private String city;
     private String country;
 
@@ -15,9 +15,9 @@ public class Address {
     private User user;
 
     // Constructor
-    public Address(String streetAddress, int postalCode, String city, String country) {
+    public Address(String streetAddress, int zipCode, String city, String country) {
         this.streetAddress = streetAddress;
-        this.postalCode = postalCode;
+        this.zipCode = zipCode;
         this.city = city;
         this.country = country;
     }
@@ -27,8 +27,8 @@ public class Address {
     public void setAddressID(Long addressID) {this.addressID = addressID;}
     public String getStreetAddress() {return streetAddress;}
     public void setStreetAddress(String streetAddress) {this.streetAddress = streetAddress;}
-    public int getPostalCode() {return postalCode;}
-    public void setPostalCode(int postalCode) {this.postalCode = postalCode;}
+    public int getZipCode() {return zipCode;}
+    public void setZipCode(int zipCode) {this.zipCode = zipCode;}
     public String getCity() {return city;}
     public void setCity(String city) {this.city = city;}
     public String getCountry() {return country;}

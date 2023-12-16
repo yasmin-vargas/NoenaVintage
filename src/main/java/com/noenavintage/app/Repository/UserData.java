@@ -10,5 +10,5 @@ public interface UserData extends JpaRepository<User, Long> {
     Optional<User> findByUserName(String userName);
     Optional<User> findByEmail(String email);
     Optional<User> findByPhone(String phone);
-    Optional<User> deleteByUserID(Long userID);
+    void deleteByUserID(Long userID);
 }
