@@ -8,10 +8,10 @@ import com.noenavintage.app.Model.Order;
 import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Model.ShoppingBag;
 import com.noenavintage.app.Repository.ShoppingBagData;
+import com.noenavintage.app.Repository.UserData;
 import com.noenavintage.app.Model.OrderItem;
 import com.noenavintage.app.Model.OrderStatusEnum;
 import com.noenavintage.app.Repository.OrderData;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,10 +23,11 @@ public class OrderController {
     @Autowired
     private ShoppingBagData shoppingBagData;
     @Autowired
-    private ShoppingBag shoppingBag;
+    private UserData userData;
     @Autowired
-    public OrderController(OrderData orderData) {
-        this.orderData = orderData;
+    private CheckoutController checkoutController;
+    @Autowired
+    public OrderController() {
     }
     @GetMapping("/allorders")
     public List<Order> getAllOrders() {
@@ -43,26 +44,33 @@ public class OrderController {
     }
     @GetMapping("/history/{userID}")
     public ResponseEntity<List<Order>> getOrderHistoryByUser(@PathVariable Long userID) {
-        List<Order> orderHistory = orderData.findByUserID(userID);
-        if (orderHistory.isEmpty()) {
-            // Handle the case where no orders are found for the user
+        // Assuming you have a method to retrieve a User by ID in your user data repository
+        User user = userData.findByUserID(userID).orElse(null);
+        if (user == null) {  // Handle the case where no user is found
+            return ResponseEntity.notFound().build();
+        }
+        List<Order> orderHistory = orderData.findOrderByUser(user);
+        if (orderHistory.isEmpty()) {  // Handle the case where no orders are found for the user
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(orderHistory);
     }
     // Method to create new order and add it to the orderList when the customer places an order
-    @PostMapping("/createorder")
+    @PostMapping("/createOrderFromBag")
     public ResponseEntity<Order> createOrderFromBag(@RequestBody User user) {
         // Use the existing instance variable
         Long userID = user.getUserID();
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUserID(userID);
+        ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
         if (shoppingBag != null && !shoppingBag.getBagItems().isEmpty()) {
             Order order = createOrder(user, shoppingBag);
+            List<OrderItem> orderItems = shoppingBag.getBagItems().stream()
+                    .map(bagItem -> new OrderItem(order, bagItem, bagItem.getBagItemQty()))
+                    .collect(Collectors.toList());
+            order.setOrderItems(orderItems);
             Order savedOrder = orderData.save(order);
             // Clear the shopping bag after creating the order
             shoppingBag.getBagItems().clear();
             shoppingBagData.save(shoppingBag);
-
             return ResponseEntity.ok(savedOrder);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -75,7 +83,7 @@ public class OrderController {
         order.setUser(user);
         // Convert BagItems to OrderItems
         List<OrderItem> orderItems = shoppingBag.getBagItems().stream()
-                .map(bagItem -> new OrderItem(order, bagItem))
+                .map(bagItem -> new OrderItem(order, bagItem, bagItem.getBagItemQty()))
                 .collect(Collectors.toList());
 
         order.setOrderItems(orderItems);
@@ -83,7 +91,7 @@ public class OrderController {
         return order;
     }
 
-    @PutMapping("/update{orderNumber}")
+    @PutMapping("/update/{orderNumber}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long orderNumber, @RequestBody Order updatedOrder) {
         Optional<Order> existingOrderOptional = orderData.findById(orderNumber);
         if (existingOrderOptional.isPresent()) {
@@ -97,13 +105,15 @@ public class OrderController {
     }
     //Managing orderStatus
     @PutMapping("/{orderNumber}/updatestatus/{newOrderStatus}")
-    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long orderNumber, @PathVariable String newStatus) {
-        orderData.updateOrderStatus(orderNumber, newStatus);
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long orderNumber, @PathVariable String newOrderStatus) {
+        orderData.updateOrderStatus(orderNumber, newOrderStatus);
         // Check if the new orderStatus is "Confirmed"
-        if ("Confirmed".equalsIgnoreCase(newStatus)) {
+        if ("CONFIRMED".equalsIgnoreCase(newOrderStatus)) {
+            // Generate a tracking number
+            String trackingNumber = checkoutController.generateTrackingNumber();
             // Trigger actions to send order confirmation and tracking number
             orderData.sendOrderConfirmation(orderNumber);
-            orderData.sendTrackingNumber(orderNumber);
+            orderData.sendTrackingNumber(orderNumber, trackingNumber);
         }
         return ResponseEntity.ok().build();
     }
@@ -116,11 +126,6 @@ public class OrderController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    // Generate a random tracking number starting from 1000
-    private int generateTrackingNumber(){
-        return new Random().nextInt(9000) + 1000;
     }
 }
 

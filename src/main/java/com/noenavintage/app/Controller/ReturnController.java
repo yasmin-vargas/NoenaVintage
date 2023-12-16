@@ -1,5 +1,6 @@
 package com.noenavintage.app.Controller;
 import com.noenavintage.app.Model.Return;
+import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Repository.OrderData;
 import com.noenavintage.app.Repository.ReturnData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class ReturnController {
     @Autowired
     private ReturnData returnData;
     @GetMapping("/history/{userID}")
-    public ResponseEntity<List<Return>> getReturnHistoryByUser(@PathVariable Long userID) {
-        List<Return> returnHistory = returnData.findByUserID(userID);
+    public ResponseEntity<List<Return>> getReturnHistoryByUser(@PathVariable User user) {
+        List<Return> returnHistory = returnData.findReturnByUser(user);
         if (returnHistory.isEmpty()) {
             // Handle the case where no orders are found for the user
             return ResponseEntity.notFound().build();

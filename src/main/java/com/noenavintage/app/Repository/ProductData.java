@@ -4,16 +4,25 @@ import java.util.Optional;
 import com.noenavintage.app.Model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface ProductData extends JpaRepository<Product, Long>{
-    List<Product> findByCategory(String category);
-    List<Product> findByProductBrand(String productBrand);
-    List<Product> findByProductColour(String productColour);
-    List<Product> findByProductSize(String productSize);
+
+    // Search for a product by name, brand or category
+    @Query("SELECT p FROM Product p JOIN p.productCategories pc WHERE " +
+            "UPPER(p.productName) LIKE UPPER(CONCAT('%', :searchTerm, '%')) OR " +
+            "UPPER(p.productBrand) LIKE UPPER(CONCAT('%', :searchTerm, '%')) OR " +
+            "UPPER(pc.categoryName) LIKE UPPER(CONCAT('%', :searchTerm, '%'))")
+    List<Product> searchProducts(@Param("searchTerm") String searchTerm);
+
+    // Order products by price and regDate
     List<Product> findAllByOrderByProductPriceAsc();
     List<Product> findAllByOrderByProductPriceDesc();
-    List<Product> findAllByOrderByProductDateDesc();
+    List<Product> findAllByOrderByRegDateDesc();
+
+    // Find and delete products by ID
     Optional<Product> findByProductID(Long productID);
     Optional<Product> deleteByProductID(Long productID);
 

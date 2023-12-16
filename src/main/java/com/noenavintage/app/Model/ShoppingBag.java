@@ -23,7 +23,6 @@ public class ShoppingBag {
     public ShoppingBag() {  // Empty constructor for JPA
     }
 
-    // Constructor
     public ShoppingBag(User user, int totalItemQty, BigDecimal totalAmount, Timestamp bagDate, List<BagItem> bagItems) {
         this.user = user;
         this.totalItemQty = totalItemQty;

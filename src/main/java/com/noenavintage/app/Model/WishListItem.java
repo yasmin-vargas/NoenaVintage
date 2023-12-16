@@ -16,21 +16,21 @@ public class WishListItem {
     @ManyToOne
     @JoinColumn(name = "variantID")
     private Variant variant;
-    private int wishlistItemQty;
+    private int wishListItemQty;
     public WishListItem() {    // Constructor
     }
     // Constructor for a simple product
-    public WishListItem(WishList wishList, Product product, int wishlistItemQty) {
+    public WishListItem(WishList wishList, Product product, int wishListItemQty) {
         this.wishList = wishList;
         this.product = product;
-        this.wishlistItemQty = wishlistItemQty;
+        this.wishListItemQty = wishListItemQty;
     }
 
     // Constructor for a variant
-    public WishListItem(WishList wishList, Variant variant, int wishlistItemQty) {
+    public WishListItem(WishList wishList, Variant variant, int wishListItemQty) {
         this.wishList = wishList;
         this.variant = variant;
-        this.wishlistItemQty = wishlistItemQty;
+        this.wishListItemQty = wishListItemQty;
     }
 
     // Getters and setters
@@ -42,6 +42,6 @@ public class WishListItem {
     public void setProduct(Product product) {this.product = product;}
     public Variant getVariant() {return variant;}
     public void setVariant(Variant variant) {this.variant = variant;}
-    public int getWishlistItemQty() {return wishlistItemQty;}
-    public void setWishlistItemQty(int wishlistItemQty) {this.wishlistItemQty = wishlistItemQty;}
+    public int getWishListItemQty() {return wishListItemQty;}
+    public void setWishListItemQty(int wishListItemQty) {this.wishListItemQty = wishListItemQty;}
 }

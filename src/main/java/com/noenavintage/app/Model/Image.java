@@ -15,10 +15,8 @@ public class Image {
     private String imageURL;
     @OneToMany(mappedBy = "image")
     private List<ProductImage> productImages;
-
     @OneToMany(mappedBy = "image")
     private List<VariantImage> variantImages;
-
     public Image() {  // Default constructor
     }
     public Image(String imageURL, List<ProductImage> productImages, List<VariantImage> variantImages) {
@@ -28,8 +26,8 @@ public class Image {
     }
 
     // Getters and setters
-    public long getImageID() {return imageID;}
-    public void setImageID(long imageID) {this.imageID = imageID;}
+    public Long getImageID() {return imageID;}
+    public void setImageID(Long imageID) {this.imageID = imageID;}
     public String getImageURL() {return imageURL;}
     public void setImageURL(String imageURL) {this.imageURL = imageURL;}
     public List<ProductImage> getProductImages() {return productImages;}

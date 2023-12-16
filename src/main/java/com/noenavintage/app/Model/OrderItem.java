@@ -13,13 +13,16 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "bagItemID")
     private BagItem bagItem;
+    @Column(name = "bagItemQty")
+    private int orderItemQty;
 
     public OrderItem() {  // Constructor
     }
 
-    public OrderItem(Order order, BagItem bagItem) {
+    public OrderItem(Order order, BagItem bagItem, int orderItemQty) {
         this.order = order;
         this.bagItem = bagItem;
+        this.orderItemQty = orderItemQty;
     }
 
     // Getters and setters
@@ -29,4 +32,6 @@ public class OrderItem {
     public void setOrder(Order order) {this.order = order;}
     public BagItem getBagItem() {return bagItem;}
     public void setBagItem(BagItem bagItem) {this.bagItem = bagItem;}
+    public int getOrderItemQty() {return orderItemQty;}
+    public void setOrderItemQty(int orderItemQty) {this.orderItemQty = orderItemQty;}
 }

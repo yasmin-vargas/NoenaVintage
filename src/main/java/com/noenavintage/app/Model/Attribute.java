@@ -31,8 +31,8 @@ public class Attribute {
     }
 
     // Getters and setters
-    public long getAttributeID() {return attributeID;}
-    public void setAttributeID(long attributeID) {this.attributeID = attributeID;}
+    public Long getAttributeID() {return attributeID;}
+    public void setAttributeID(Long attributeID) {this.attributeID = attributeID;}
     public String getAttributeType() {return attributeType;}
     public void setAttributeType(String attributeType) {this.attributeType = attributeType;}
     public String getAttributeValue() {return attributeValue;}

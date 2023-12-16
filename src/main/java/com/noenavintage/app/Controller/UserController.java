@@ -21,20 +21,20 @@ public class UserController {
     public List<User> getAllUsers() {
         return userData.findAll();
     }
-    @GetMapping("/get{id}")
+    @GetMapping("/get{userID}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> userOptional = userData.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint to register a new user
-    @PostMapping("/post")
+    @PostMapping("/createUser")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userData.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
     // Search
-    @GetMapping("/search")
+    @GetMapping("/searchUser")
     public ResponseEntity<Optional<User>> searchUsers(
             @RequestParam(name = "userName", required = false) String userName,
             @RequestParam(name = "email", required = false) String email,

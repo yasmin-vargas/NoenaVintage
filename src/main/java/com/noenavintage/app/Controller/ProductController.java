@@ -34,7 +34,7 @@ public class ProductController {
     }
     @PutMapping("/update{productID}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productID, @RequestBody Product updatedProduct) {
-        Optional<Product> existingProductOptional = productData.findById(productID);
+        Optional<Product> existingProductOptional = productData.findByProductID(productID);
         if (existingProductOptional.isPresent()) {
             Product existingProduct = existingProductOptional.get();
             // Ensure that the ProductID is set properly
@@ -52,9 +52,9 @@ public class ProductController {
     }
     @DeleteMapping("/delete{productID}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productID) {
-        Optional<Product> existingProductOptional = productData.findById(productID);
+        Optional<Product> existingProductOptional = productData.findByProductID(productID);
         if (existingProductOptional.isPresent()) {
-            productData.deleteById(productID);
+            productData.deleteByProductID(productID);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -72,18 +72,15 @@ public class ProductController {
     }
     @GetMapping("/sortByDateDesc")
     public List<Product> getProductsSortedByDateDesc() {
-        return productData.findAllByOrderByProductDateDesc();
+        return productData.findAllByOrderByRegDateDesc();
     }
 
     // Placeholder for search method
-    @GetMapping("/search")
+    @GetMapping("/searchProduct")
     public List<Product> searchProducts(
-            @RequestParam(name = "category", required = false) String category,
-            @RequestParam(name = "brand", required = false) String brand) {
-        if (category != null) {
-            return productData.findByCategory(category);
-        } else if (brand != null) {
-            return productData.findByProductBrand(brand);
+            @RequestParam(name = "searchTerm", required = false) String searchTerm) {
+        if (searchTerm != null) {
+            return productData.searchProducts(searchTerm);
         } else {
             return Collections.emptyList();
         }

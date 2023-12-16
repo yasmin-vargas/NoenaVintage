@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="Variant")
@@ -20,31 +21,34 @@ public class Variant {
     @JoinColumn(name = "productID")
     private Product product;
     private String variantName;
+    private BigDecimal variantPrice;
     private String variantColour;
     private String variantSize;
-    private BigDecimal variantPrice;
-    private int variantQtyInStock;
+    private int QtyInStock;
     private String variantImageURL;   //Main image
     private String thumbnailURL;
     @OneToMany(mappedBy = "variant")
     private List<VariantImage> variantImages;
+    private Timestamp regDate;
     public Variant() {  // Default constructor necessary for JPA entities
     }
 
-    public Variant(Product product, String variantName, String variantColour, String variantSize, BigDecimal variantPrice, int variantQtyInStock, String variantImageURL, String thumbnailURL) {
+    public Variant(Product product, String variantName, BigDecimal variantPrice, String variantColour, String variantSize, int QtyInStock, String variantImageURL, String thumbnailURL, List<VariantImage> variantImages, Timestamp regDate) {
         this.product = product;
         this.variantName = variantName;
+        this.variantPrice = variantPrice;
         this.variantColour = variantColour;
         this.variantSize = variantSize;
-        this.variantPrice = variantPrice;
-        this.variantQtyInStock = variantQtyInStock;
+        this.QtyInStock = QtyInStock;
         this.variantImageURL = variantImageURL;
         this.thumbnailURL = thumbnailURL;
+        this.variantImages = variantImages;
+        this.regDate = regDate;
     }
 
     // Getters and setters
-    public long getVariantID() { return variantID; }
-    public void setVariantID(long variantID) { this.variantID = variantID; }
+    public Long getVariantID() { return variantID; }
+    public void setVariantID(Long variantID) { this.variantID = variantID; }
     public String getVariantName() { return variantName; }
     public void setVariantName(String variantName) { this.variantName = variantName; }
     public BigDecimal getVariantPrice() { return variantPrice; }
@@ -53,10 +57,14 @@ public class Variant {
     public void setVariantColour(String variantColour) { this.variantColour = variantColour; }
     public String getVariantSize() { return variantSize; }
     public void setVariantSize(String variantSize) { this.variantSize = variantSize; }
-    public int getVariantQtyInStock() { return variantQtyInStock; }
-    public void setVariantQtyInStock(int variantQtyInStock) { this.variantQtyInStock = variantQtyInStock; }
+    public int getQtyInStock() { return QtyInStock; }
+    public void setQtyInStock(int QtyInStock) { this.QtyInStock = QtyInStock; }
     public String getVariantImageURL() { return variantImageURL; }
     public void setVariantImageURL(String variantImageURL) { this.variantImageURL = variantImageURL; }
     public String getThumbnailURL() { return thumbnailURL; }
     public void setThumbnailURL(String thumbnailURL) { this.thumbnailURL = thumbnailURL; }
+    public List<VariantImage> getVariantImages() {return variantImages;}
+    public void setVariantImages(List<VariantImage> variantImages) {this.variantImages = variantImages;}
+    public Timestamp getRegDate() {return regDate;}
+    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
 }

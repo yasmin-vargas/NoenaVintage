@@ -22,6 +22,7 @@ public class CategoryController {
     public List<Category> getAllCategories() {
         return categoryData.findAll();
     }
+
     // Endpoint to get a specific category by ID
     @GetMapping("/getCategoryByID/{categoryID}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryID) {
@@ -31,7 +32,7 @@ public class CategoryController {
     }
     // Endpoint to get categories based on parentCategory
     @GetMapping("/parent/{parentCategory}")
-    public List<Category> getCategoriesByParentCategory(@PathVariable String parentCategory) {
+    public List<Category> getCategoriesByParentCategory(@PathVariable Long parentCategory) {
         return categoryData.findByParentCategory(parentCategory);
     }
     // Endpoint to create a new category
@@ -62,5 +63,3 @@ public class CategoryController {
         }
     }
 }
-
-// (Only for Admin Role) Permissions

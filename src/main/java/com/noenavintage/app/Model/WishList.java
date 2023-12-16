@@ -1,9 +1,5 @@
 package com.noenavintage.app.Model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 @Entity
@@ -12,22 +8,25 @@ public class WishList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wishListID;
-    private long userID;
-    private List<Product> wishList; // Declare a wishlist of products
+    @OneToOne
+    @JoinColumn(name = "userID")
+    private User user;
+    @OneToMany(mappedBy = "wishList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WishListItem> wishListItems; // Declare a wishlist of wishlist items
     public WishList() {  // Default constructor required by JPA
     }
 
     // Constructor
-    public WishList(long userID, List<Product> wishList) {
-        this.userID = userID;
-        this.wishList = wishList;
+    public WishList(User user, List<WishListItem> wishListItems) {
+        this.user = user;
+        this.wishListItems = wishListItems;
     }
     // Getters and setters
-    public long getWishListID() {return wishListID;}
+    public Long getWishListID() {return wishListID;}
     public void setWishListID(long wishListID) {this.wishListID = wishListID;}
-    public long getUserID() {return userID;}
-    public void setUserID(long userID) {this.userID = userID;}
-    public List<Product> getWishListItems() {return wishList;}
-    public void setWishListItems(List<Product> wishList) {this.wishList = wishList;}
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
+    public List<WishListItem> getWishListItems() {return wishListItems;}
+    public void setWishListItems(List<WishListItem> wishListItems) {this.wishListItems = wishListItems;}
 }
 

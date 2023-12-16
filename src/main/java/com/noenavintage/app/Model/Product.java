@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import jakarta.persistence.*;
 import java.util.List;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="Product")
@@ -39,11 +40,12 @@ public class Product{
     private List<ProductImage> productImages;
     @OneToMany(mappedBy = "product")
     private List<Attribute> productAttributes;
+    private Timestamp regDate;
     public Product() {   // No-argument constructor
     }
 
     // Product Constructor
-    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<Variant> variants, List<ProductImage> productImages){
+    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<Variant> variants, List<ProductImage> productImages, List<Attribute> productAttributes, Timestamp regDate){
         this.productCategories = productCategories;
         this.productName = productName;
         this.productBrand = productBrand;
@@ -59,11 +61,13 @@ public class Product{
         this.thumbnailURL = thumbnailURL;
         this.variants = variants;
         this.productImages = productImages;
+        this.productAttributes = productAttributes;
+        this.regDate = regDate;
     }
 
     //Getters and setters
-    public long getProductID(){return productID;}
-    public void setProductID(long productID) {this.productID = productID;}
+    public Long getProductID(){return productID;}
+    public void setProductID(Long productID) {this.productID = productID;}
     public List<Category> getProductCategory() {return productCategories;}
     public void setProductCategory(List<Category> productCategories) {this.productCategories = productCategories;}
     public String getProductName(){return productName;}
@@ -134,6 +138,8 @@ public class Product{
     public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;}
     public List<Attribute> getAttributes() {return productAttributes;}
     public void setAttributes(List<Attribute> productAttributes) {this.productAttributes = productAttributes;}
+    public Timestamp getRegDate() {return regDate;}
+    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
 }
 
 

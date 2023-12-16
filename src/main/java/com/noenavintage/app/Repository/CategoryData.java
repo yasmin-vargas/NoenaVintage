@@ -8,5 +8,5 @@ import java.util.List;
 public interface CategoryData extends JpaRepository<Category, Long>{
     Optional<Category> findByCategoryID(Long categoryID);
     Optional<Category> findByCategoryName(String categoryName);
-    List<Category> findByParentCategory(String parentCategory);
+    List<Category> findByParentCategory(Long parentCategory);
 }

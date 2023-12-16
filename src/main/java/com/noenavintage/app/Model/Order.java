@@ -16,10 +16,8 @@ public class Order {
     @Id
     private Long orderNumber;  // initializing object variables, that represent attributes of an order
     private Timestamp orderDate;
-    private int itemQty;
+    private int totalItemQty;
     private BigDecimal totalAmount;
-    @Enumerated(EnumType.STRING)
-    private OrderStatusEnum orderStatus;
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
@@ -31,20 +29,25 @@ public class Order {
     private Address shippingAddress;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
+    @Enumerated(EnumType.STRING)
+    private OrderStatusEnum orderStatus;
+    @Column(name = "trackingNumber")
+    private String trackingNumber;
     public Order() {  // Default constructor required by JPA
         this.orderItems = new ArrayList<>();
     }
 
     //Order Constructor
-    public Order(Timestamp orderDate, int itemQty, BigDecimal totalAmount, OrderStatusEnum orderStatus, User user, Address billingAddress, Address shippingAddress, List <OrderItem> orderItems){
+    public Order(Timestamp orderDate, int totalItemQty, BigDecimal totalAmount, User user, Address billingAddress, Address shippingAddress, List <OrderItem> orderItems, OrderStatusEnum orderStatus, String trackingNumber){
         this.orderDate = orderDate;
-        this.itemQty = itemQty;
+        this.totalItemQty = totalItemQty;
         this.totalAmount = totalAmount;
-        this.orderStatus = orderStatus;
         this.user = user;
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
         this.orderItems = orderItems;
+        this.orderStatus = orderStatus;
+        this.trackingNumber = trackingNumber;
     }
 
     // Getters and setters
@@ -52,8 +55,8 @@ public class Order {
     public void setOrderNumber(long orderNumber) {this.orderNumber = orderNumber;}
     public Timestamp getOrderDate() {return orderDate;}
     public void setOrderDate(Timestamp orderDate) {this.orderDate = orderDate;}
-    public int getItemQty() {return itemQty;}
-    public void setItemQty(int itemQty) {this.itemQty = itemQty;}
+    public int getTotalItemQty() {return totalItemQty;}
+    public void setTotalItemQty(int totalItemQty) {this.totalItemQty = totalItemQty;}
     public BigDecimal getTotalAmount() {return totalAmount;}
     public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
     public OrderStatusEnum getOrderStatus() {return orderStatus;}
@@ -66,6 +69,7 @@ public class Order {
     public void setShippingAddress(Address shippingAddress) {this.shippingAddress = shippingAddress;}
     public List<OrderItem> getOrderItems() {return orderItems;}
     public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
-
+    public String getTrackingNumber() {return trackingNumber;}
+    public void setTrackingNumber(String trackingNumber) {this.trackingNumber = trackingNumber;}
 }
 

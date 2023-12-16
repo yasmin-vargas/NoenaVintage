@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.List;
 import java.math.BigDecimal;
+import java.util.Random;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/checkout")
@@ -22,19 +25,17 @@ public class CheckoutController {
     @Autowired
     private ShoppingBagController shoppingBagController;
     @Autowired
-    public CheckoutController(OrderData orderData, ShoppingBagController shoppingBagController) {
-        this.orderData = orderData;
-        this.shoppingBagController = shoppingBagController;
+    public CheckoutController() {
     }
 
     // Get Checkout summary
-    @GetMapping("/checkoutsummary")
-    public ResponseEntity<Map<String, Object>> getCheckoutSummary(@RequestParam Long userID) {
-        BigDecimal totalAmount = shoppingBagController.getTotalAmount(userID);
+    @GetMapping("/checkoutSummary")
+    public ResponseEntity<Map<String, Object>> getCheckoutSummary(@RequestParam User user) {
+        BigDecimal totalAmount = shoppingBagController.getTotalAmount(user);
         BigDecimal shippingCost = shoppingBagController.getShippingCost();
 
         // Apply discount if available
-        Map<String, Object> discountDetails = applyDiscountCode(userID, Map.of());
+        Map<String, Object> discountDetails = applyDiscountCode(user, Map.of());
 
         // Convert checkout details to a format suitable for JSON response
         Map<String, Object> checkoutSummary = calculateCheckoutSummary(totalAmount, shippingCost, discountDetails);
@@ -43,9 +44,9 @@ public class CheckoutController {
     }
 
     // Apply discount code
-    @PostMapping("/applydiscount")
-    public Map<String, Object> applyDiscountCode(@RequestParam Long userID, @RequestBody Map<String, String> requestBody) {
-        BigDecimal totalAmount = shoppingBagController.getTotalAmount(userID);
+    @PostMapping("/applyDiscountCode")
+    public Map<String, Object> applyDiscountCode(@RequestParam User user, @RequestBody Map<String, String> requestBody) {
+        BigDecimal totalAmount = shoppingBagController.getTotalAmount(user);
 
         // Extract discount code from the request body
         String discountCode = requestBody.get("discountCode");
@@ -99,12 +100,12 @@ public class CheckoutController {
     }
 
     // Confirm order, create a new order
-    @PostMapping("/confirm")
+    @PostMapping("/confirmCheckout")
     public ResponseEntity<Map<String, Object>> confirmCheckout(@RequestBody User user) {
         // Get shopping bag items and total amount
         Long userID = user.getUserID();
-        List<BagItem> bagItems = shoppingBagController.getBagItems(userID);
-        BigDecimal totalAmount = shoppingBagController.getTotalAmount(userID);
+        List<BagItem> bagItems = shoppingBagController.getBagItems(user);
+        BigDecimal totalAmount = shoppingBagController.getTotalAmount(user);
         // Map bagItems to orderItems
         List<OrderItem> orderItems = mapBagItemsToOrderItems(bagItems);
 
@@ -123,7 +124,7 @@ public class CheckoutController {
                 "confirmationMessage", "Thank you for your order!"
         );
         // Clear the shopping bag after creating the order
-        shoppingBagController.clearShoppingBag(userID);
+        shoppingBagController.clearShoppingBag(user);
 
         return ResponseEntity.ok(confirmationDetails);
     }
@@ -131,19 +132,25 @@ public class CheckoutController {
     // Helper method to map BagItems to OrderItems
     private List<OrderItem> mapBagItemsToOrderItems(List<BagItem> bagItems) {
         return bagItems.stream()
-                .map(bagItem -> new OrderItem(null, bagItem)) // Assuming OrderItem has a constructor taking an Order and BagItem
+                .map(bagItem -> new OrderItem(new Order(), bagItem, bagItem.getBagItemQty()))
                 .collect(Collectors.toList());
     }
 
     // Send order confirmation and tracking number
-    @PostMapping("/sendconfirm/{orderNumber}")
+    @PostMapping("/sendConfirmation/{orderNumber}")
     public ResponseEntity<Void> sendOrderConfirmation(@PathVariable Long orderNumber) {
         orderData.sendOrderConfirmation(orderNumber);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/sendtracking/{orderNumber}")
+    @PostMapping("/sendTrackingNumber/{orderNumber}")
     public ResponseEntity<Void> sendTrackingNumber(@PathVariable Long orderNumber) {
-        orderData.sendTrackingNumber(orderNumber);
+        String trackingNumber = generateTrackingNumber();  // Generate a tracking number
+        orderData.sendTrackingNumber(orderNumber, trackingNumber);
         return ResponseEntity.ok().build();
+    }
+
+    // Generate a random tracking number as a string
+    public String generateTrackingNumber() {
+        return "TRK" + (new Random().nextInt(9000) + 1000);
     }
 }
