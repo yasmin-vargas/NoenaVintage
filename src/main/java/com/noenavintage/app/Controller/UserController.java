@@ -1,12 +1,18 @@
 package com.noenavintage.app.Controller;
 import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Repository.UserData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 @CrossOrigin(origins = "https://192.168.8.9:8081")
 @RestController
 @RequestMapping("/users")
@@ -14,14 +20,13 @@ public class UserController {
     @Autowired
     private UserData userData;
     @Autowired
-    public UserController(UserData userData) {
-        this.userData = userData;
+    public UserController() {
     }
-    @GetMapping("/getall")
+    @GetMapping("/getAllUsers")
     public List<User> getAllUsers() {
         return userData.findAll();
     }
-    @GetMapping("/get{userID}")
+    @GetMapping("/get/{userID}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> userOptional = userData.findById(id);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -52,7 +57,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(Optional.empty());
         }
     }
-    @PutMapping("/update{id}")
+    @PutMapping("/update/{userID}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         Optional<User> existingUserOptional = userData.findById(id);
         if (existingUserOptional.isPresent()) {
@@ -64,7 +69,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{userID}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userID) {
         Optional<User> existingUserOptional = userData.findByUserID(userID);
         if (existingUserOptional.isPresent()) {

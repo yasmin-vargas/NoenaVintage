@@ -12,4 +12,4 @@ handlers:
 
 entrypoint: "java -cp target/NoenaVintageApp.jar"
 health_check:
-  enable_health_check: True
+  enable_health_check: true

@@ -24,8 +24,7 @@ public interface VariantData extends JpaRepository<Variant, Long> {
     List<Variant> findAllByOrderByRegDateDesc();
 
 
-    // Find and delete variants by ID
+    // Find variants by ID
     Optional<Variant> findByVariantID(Long variantID);
-    Optional<Variant> deleteByVariantID(Long variantID);
 }
 

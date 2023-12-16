@@ -4,10 +4,6 @@ import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Model.ShoppingBag;
 import com.noenavintage.app.Model.BagItem;
 import com.noenavintage.app.Repository.ShoppingBagData;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +16,25 @@ import java.util.Collections;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import java.util.Objects;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/shoppingbag")
+@RequestMapping("/shoppingbags")
 public class ShoppingBagController {
     @Autowired
     private ShoppingBagData shoppingBagData;
     private final static BigDecimal SHIPPING_COST = new BigDecimal("7.95"); // Defines as example constant shipping cost in EUR
     private static Logger log = LoggerFactory.getLogger(ShoppingBagController.class);
 
+    @Autowired
+    public ShoppingBagController() {
+    }
     // Method to get the BagItems in the ShoppingBag
     @GetMapping("/bagItems")
     public List<BagItem> getBagItems(@RequestBody User user) {
@@ -129,7 +135,7 @@ public class ShoppingBagController {
         shoppingBag.setTotalItemQty(totalBagQty);
     }
 
-    @DeleteMapping("/removefrombag")
+    @DeleteMapping("/removeFromBag")
     // Removes BagItem to ShoppingBag
     public void removeFromBag(@RequestBody User user, @RequestParam Long bagItemID) {
         ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);

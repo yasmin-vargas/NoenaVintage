@@ -11,7 +11,7 @@
         "-c",
         "gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy"
       ]
-    }
+    },
     {
       "name": "gcr.io/cloud-builders/gcloud",
       "args": [

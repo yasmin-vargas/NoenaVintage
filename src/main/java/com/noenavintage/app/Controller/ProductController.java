@@ -1,38 +1,42 @@
 package com.noenavintage.app.Controller;
 import com.noenavintage.app.Model.Product;
 import com.noenavintage.app.Repository.ProductData;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Collections;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductData productData;
     @Autowired
-    public ProductController(ProductData productData) {
-        this.productData = productData;
+    public ProductController() {
     }
-    @GetMapping("/GetAllProducts")
+    @GetMapping("/getAllProducts")
     public List<Product> getAllProducts() {
         return productData.findAll();
     }
-    @GetMapping("/get{productID}")
+    @GetMapping("/get/{productID}")
     public ResponseEntity<Product> getProductById(@PathVariable Long productID) {
         Optional<Product> productOptional = productData.findById(productID);
         return productOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @PostMapping("/create")
+    @PostMapping("/createProduct")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productData.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
-    @PutMapping("/update{productID}")
+    @PutMapping("/update/{productID}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productID, @RequestBody Product updatedProduct) {
         Optional<Product> existingProductOptional = productData.findByProductID(productID);
         if (existingProductOptional.isPresent()) {
@@ -50,11 +54,11 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/delete{productID}")
+    @DeleteMapping("/delete/{productID}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productID) {
         Optional<Product> existingProductOptional = productData.findByProductID(productID);
         if (existingProductOptional.isPresent()) {
-            productData.deleteByProductID(productID);
+            productData.findByProductID(productID);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

@@ -1,20 +1,24 @@
 package com.noenavintage.app.Controller;
-import org.springframework.web.bind.annotation.*;
 import com.noenavintage.app.Model.Category;
 import com.noenavintage.app.Repository.CategoryData;
 import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
-    private final CategoryData categoryData;
     @Autowired
-    public CategoryController(CategoryData categoryData) {
-        this.categoryData = categoryData;
+    private CategoryData categoryData;
+    @Autowired
+    public CategoryController() {
     }
 
     // Endpoint to get all categories
@@ -36,7 +40,7 @@ public class CategoryController {
         return categoryData.findByParentCategory(parentCategory);
     }
     // Endpoint to create a new category
-    @PostMapping("/postCategory")
+    @PostMapping("/createCategory")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         Category createdCategory = categoryData.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);

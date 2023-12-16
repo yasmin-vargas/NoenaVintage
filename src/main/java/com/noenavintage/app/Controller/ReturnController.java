@@ -3,13 +3,17 @@ import com.noenavintage.app.Model.Return;
 import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Repository.OrderData;
 import com.noenavintage.app.Repository.ReturnData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/returns")
 public class ReturnController {
@@ -17,6 +21,9 @@ public class ReturnController {
     private OrderData orderData;
     @Autowired
     private ReturnData returnData;
+    @Autowired
+    public ReturnController() {
+    }
     @GetMapping("/history/{userID}")
     public ResponseEntity<List<Return>> getReturnHistoryByUser(@PathVariable User user) {
         List<Return> returnHistory = returnData.findReturnByUser(user);

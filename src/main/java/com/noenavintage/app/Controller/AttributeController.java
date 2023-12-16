@@ -1,19 +1,27 @@
 package com.noenavintage.app.Controller;
 import com.noenavintage.app.Model.Attribute;
 import com.noenavintage.app.Repository.AttributeData;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/attributes")
 public class AttributeController {
 
     @Autowired
     private AttributeData attributeData;
+    @Autowired
+    public AttributeController() {
+    }
 
     @GetMapping("/getAllAttributes")
     public List<Attribute> getAllAttributes() {

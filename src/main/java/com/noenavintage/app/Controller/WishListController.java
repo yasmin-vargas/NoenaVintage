@@ -4,27 +4,31 @@ import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Model.WishList;
 import com.noenavintage.app.Repository.WishListData;
 import com.noenavintage.app.Model.WishListItem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Collections;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import java.util.Map;
 import java.util.Objects;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/wishlist")
+@RequestMapping("/wishlists")
 public class WishListController {
     @Autowired
     private WishListData wishListData;
     private static final Logger log = LoggerFactory.getLogger(WishListController.class);
+    @Autowired
     public WishListController() {
     }
 

@@ -1,24 +1,28 @@
 package com.noenavintage.app.Controller;
 import com.noenavintage.app.Model.Variant;
 import com.noenavintage.app.Repository.VariantData;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Collections;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/variants")
 public class VariantController {
     @Autowired
     private VariantData variantData;
     @Autowired
-    public VariantController(VariantData variantData) {
-        this.variantData = variantData;
+    public VariantController() {
     }
-    @GetMapping("/GetAllVariants")
+    @GetMapping("/getAllVariants")
     public List<Variant> getAllVariants() {
         return variantData.findAll();
     }
@@ -32,7 +36,7 @@ public class VariantController {
         Variant createdVariant = variantData.save(variant);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdVariant);
     }
-    @PutMapping("/update{variantID}")
+    @PutMapping("/update/{variantID}")
     public ResponseEntity<Variant> updateVariant(@PathVariable Long variantID, @RequestBody Variant updatedVariant) {
         Optional<Variant> existingVariantOptional = variantData.findByVariantID(variantID);
         if (existingVariantOptional.isPresent()) {
@@ -48,11 +52,11 @@ public class VariantController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/delete{variantID}")
+    @DeleteMapping("/delete/{variantID}")
     public ResponseEntity<Void> deleteVariant(@PathVariable Long variantID) {
         Optional<Variant> existingVariantOptional = variantData.findByVariantID(variantID);
         if (existingVariantOptional.isPresent()) {
-            variantData.deleteByVariantID(variantID);
+            variantData.findByVariantID(variantID);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -74,7 +78,7 @@ public class VariantController {
     }
 
     // Placeholder for search method
-    @GetMapping("/search")
+    @GetMapping("/searchVariants")
     public List<Variant> searchVariants(
             @RequestParam(name = "searchTerm", required = false) String searchTerm) {
         if (searchTerm != null) {
