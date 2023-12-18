@@ -9,11 +9,8 @@ import java.util.Collections;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/variants")
 public class VariantController {
@@ -30,6 +27,30 @@ public class VariantController {
     public ResponseEntity<Variant> getVariantById(@PathVariable Long variantID) {
         Optional<Variant> variantOptional = variantData.findByVariantID(variantID);
         return variantOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    // Sorting methods
+    @GetMapping("/sortByPriceAsc")
+    public List<Variant> getVariantsSortedByPriceAsc() {
+        return variantData.findAllByOrderByVariantPriceAsc();
+    }
+    @GetMapping("/sortByPriceDesc")
+    public List<Variant> getVariantsSortedByPriceDesc() {
+        return variantData.findAllByOrderByVariantPriceDesc();
+    }
+    @GetMapping("/sortByDateDesc")
+    public List<Variant> getVariantsSortedByDateDesc() {
+        return variantData.findAllByOrderByRegDateDesc();
+    }
+
+    // Placeholder for search method
+    @GetMapping("/searchVariant")
+    public List<Variant> searchVariant(
+            @RequestParam(name = "searchTerm", required = false) String searchTerm) {
+        if (searchTerm != null) {
+            return variantData.searchVariants(searchTerm);
+        } else {
+            return Collections.emptyList();
+        }
     }
     @PostMapping("/create")
     public ResponseEntity<Variant> createVariant(@RequestBody Variant variant) {
@@ -60,31 +81,6 @@ public class VariantController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
-        }
-    }
-
-    // Sorting methods
-    @GetMapping("/sortByPriceAsc")
-    public List<Variant> getVariantsSortedByPriceAsc() {
-        return variantData.findAllByOrderByVariantPriceAsc();
-    }
-    @GetMapping("/sortByPriceDesc")
-    public List<Variant> getVariantsSortedByPriceDesc() {
-        return variantData.findAllByOrderByVariantPriceDesc();
-    }
-    @GetMapping("/sortByDateDesc")
-    public List<Variant> getVariantsSortedByDateDesc() {
-        return variantData.findAllByOrderByRegDateDesc();
-    }
-
-    // Placeholder for search method
-    @GetMapping("/searchVariants")
-    public List<Variant> searchVariants(
-            @RequestParam(name = "searchTerm", required = false) String searchTerm) {
-        if (searchTerm != null) {
-            return variantData.searchVariants(searchTerm);
-        } else {
-            return Collections.emptyList();
         }
     }
 }

@@ -18,12 +18,9 @@ import org.springframework.http.HttpStatus;
 import java.util.Objects;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.http.ResponseEntity;
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/shoppingbags")
 public class ShoppingBagController {
@@ -36,7 +33,7 @@ public class ShoppingBagController {
     public ShoppingBagController() {
     }
     // Method to get the BagItems in the ShoppingBag
-    @GetMapping("/bagItems")
+    @GetMapping("/bagItems/{userID}")
     public List<BagItem> getBagItems(@RequestBody User user) {
         ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
         if (shoppingBag != null) {
@@ -77,25 +74,38 @@ public class ShoppingBagController {
         return totalAmount;
     }
 
-    @PostMapping("/addToBag")
+    @PostMapping("/addToBag/{productID}")
     // Adds Products or Variants to ShoppingBag
-    public void addToBag(@RequestBody User user, @RequestBody Map<String, Object> request) {
-        ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
-        if(shoppingBag !=null) {
+    public ResponseEntity<String> addToBag(
+            @PathVariable String productID,
+            @RequestBody Map<String, Object> request
+    ) {
+        try {
+            // Extract necessary data from the request
+            User user = (User) request.get("user");
             Product product = (Product) request.get("product");
             int bagItemQty = (int) request.get("bagItemQty");
 
-            if (product != null && bagItemQty > 0) {
-                BagItem bagItem = new BagItem(shoppingBag, product, bagItemQty);
-                shoppingBag.getBagItems().add(bagItem);
-                shoppingBagData.save(shoppingBag);
+            // Your existing logic to fetch user and shopping bag
+            ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
+
+            if (shoppingBag != null) {
+                if (product != null && bagItemQty > 0) {
+                    BagItem bagItem = new BagItem(shoppingBag, product, bagItemQty);
+                    shoppingBag.getBagItems().add(bagItem);
+                    shoppingBagData.save(shoppingBag);
+
+                    return ResponseEntity.ok("Item added to Shopping Bag");
+                } else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid product or quantity.");
+                }
             } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid product or quantity.");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping bag not found for user: " + user);
             }
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping bag not found for user: " + user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add item to Shopping Bag");
         }
-}
+    }
 
     @PutMapping("/updateBagItemQty")
     public void updateBagItemQty(@RequestBody User user, @RequestBody Map<String, Object> bagItem) {

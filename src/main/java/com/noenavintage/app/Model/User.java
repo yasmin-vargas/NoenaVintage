@@ -21,10 +21,11 @@ public class User {
     private LocalDate birthDate;
     @Enumerated(EnumType.STRING)
     private RoleEnum userRole;
-    @Column(name = "regDate")
     private Timestamp regDate;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> userAddresses;
+    public User() {  // default constructor
+    }
     public User(String userName, String userPassword, String firstName, String lastName, String email, String phone, LocalDate birthDate, RoleEnum userRole, Timestamp regDate){
         this.userName = userName;
         this.userPassword = userPassword;
@@ -61,7 +62,7 @@ public class User {
 
     //Login method
     public boolean login(String enteredPassword) {
-         // Check if enteredPassword matches the stored password
-         return enteredPassword.equals(this.userPassword);
+        // Check if enteredPassword matches the stored password
+        return enteredPassword.equals(this.userPassword);
     }
 }

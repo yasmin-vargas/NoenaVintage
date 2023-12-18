@@ -20,7 +20,6 @@ public interface ProductData extends JpaRepository<Product, Long>{
     // Order products by price and regDate
     List<Product> findAllByOrderByProductPriceAsc();
     List<Product> findAllByOrderByProductPriceDesc();
-    List<Product> findAllByOrderByRegDateDesc();
 
     // Find products by ID
     Optional<Product> findByProductID(Long productID);

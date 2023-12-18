@@ -4,14 +4,11 @@ import com.noenavintage.app.Repository.CategoryData;
 import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
@@ -28,16 +25,16 @@ public class CategoryController {
     }
 
     // Endpoint to get a specific category by ID
-    @GetMapping("/getCategoryByID/{categoryID}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryID) {
+    @GetMapping("/get/{categoryID}")
+    public ResponseEntity<Category> getCategoryByID(@PathVariable Long categoryID) {
         return categoryData.findByCategoryID(categoryID)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     // Endpoint to get categories based on parentCategory
-    @GetMapping("/parent/{parentCategory}")
-    public List<Category> getCategoriesByParentCategory(@PathVariable Long parentCategory) {
-        return categoryData.findByParentCategory(parentCategory);
+    @GetMapping("/parent/{parentCategoryID}")
+    public List<Category> getCategoriesByParentCategory(@PathVariable Long parentCategoryID) {
+        return categoryData.findByParentCategoryID(parentCategoryID);
     }
     // Endpoint to create a new category
     @PostMapping("/createCategory")
@@ -46,7 +43,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
     // Endpoint to update an existing category
-    @PutMapping("/updateCategory/{categoryID}")
+    @PutMapping("/update/{categoryID}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long categoryID, @RequestBody Category category) {
         if (!categoryData.existsById(categoryID)) {
             return ResponseEntity.notFound().build();

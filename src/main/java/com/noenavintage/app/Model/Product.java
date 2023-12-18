@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import jakarta.persistence.*;
 import java.util.List;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="Product")
@@ -29,8 +30,7 @@ public class Product{
     private String productSize;
     private BigDecimal importPrice;
     private BigDecimal productPrice;
-    private BigDecimal discountPrice;
-    private int QtyInStock;
+    private int qtyInStock;
     private String supplierCode;
     private String productImageURL;
     private String thumbnailURL;
@@ -40,12 +40,11 @@ public class Product{
     private List<ProductImage> productImages;
     @OneToMany(mappedBy = "product")
     private List<Attribute> productAttributes;
-    private Timestamp regDate;
-    public Product() {   // No-argument constructor
+
+    public Product() {
     }
 
-    // Product Constructor
-    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, BigDecimal discountPrice, int QtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<Variant> variants, List<ProductImage> productImages, List<Attribute> productAttributes, Timestamp regDate){
+    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, int qtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<Variant> variants, List<ProductImage> productImages, List<Attribute> productAttributes){
         this.productCategories = productCategories;
         this.productName = productName;
         this.productBrand = productBrand;
@@ -54,15 +53,13 @@ public class Product{
         this.productSize = productSize;
         this.importPrice = importPrice;
         this.productPrice = productPrice;
-        this.discountPrice = discountPrice;
-        this.QtyInStock = QtyInStock;
+        this.qtyInStock = qtyInStock;
         this.supplierCode = supplierCode;
         this.productImageURL = productImageURL;
         this.thumbnailURL = thumbnailURL;
         this.variants = variants;
         this.productImages = productImages;
         this.productAttributes = productAttributes;
-        this.regDate = regDate;
     }
 
     //Getters and setters
@@ -108,17 +105,11 @@ public class Product{
     public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
-    public BigDecimal getDiscountPrice(){
-        return discountPrice;
-    }
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
-    }
     public int getQtyInStock(){
-        return QtyInStock;
+        return qtyInStock;
     }
-    public void setQtyInStock(int QtyInStock) {
-        this.QtyInStock = QtyInStock;
+    public void setQtyInStock(int qtyInStock) {
+        this.qtyInStock = qtyInStock;
     }
     public String getSupplierCode(){
         return supplierCode;
@@ -138,8 +129,6 @@ public class Product{
     public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;}
     public List<Attribute> getAttributes() {return productAttributes;}
     public void setAttributes(List<Attribute> productAttributes) {this.productAttributes = productAttributes;}
-    public Timestamp getRegDate() {return regDate;}
-    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
 }
 
 

@@ -8,12 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-@CrossOrigin(origins = "https://192.168.8.9:8081")
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -27,16 +23,9 @@ public class UserController {
         return userData.findAll();
     }
     @GetMapping("/get/{userID}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> userOptional = userData.findById(id);
+    public ResponseEntity<User> getUserByID(@PathVariable Long userID) {
+        Optional<User> userOptional = userData.findByUserID(userID);
         return userOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint to register a new user
-    @PostMapping("/createUser")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userData.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
     // Search
     @GetMapping("/searchUser")
@@ -57,12 +46,13 @@ public class UserController {
             return ResponseEntity.badRequest().body(Optional.empty());
         }
     }
+
     @PutMapping("/update/{userID}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        Optional<User> existingUserOptional = userData.findById(id);
+    public ResponseEntity<User> updateUser(@PathVariable Long userID, @RequestBody User updatedUser) {
+        Optional<User> existingUserOptional = userData.findByUserID(userID);
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
-            updatedUser.setUserID(id);
+            updatedUser.setUserID(userID);
             User updated = userData.save(updatedUser);
             return ResponseEntity.ok(updated);
         } else {

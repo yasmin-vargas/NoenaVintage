@@ -9,14 +9,10 @@ import java.util.Optional;
 public interface AddressData extends JpaRepository<Address, Long> {
     Optional<Address> findAddressByUser(User user);
     Optional<Address> findAddressByCity(String city);
-
     Optional<Address> findAddressByZipCode(int zipCode);
-
     Optional<Address> findAddressByCountry(String country);
-
 
     // find addresses and delete by ID
     Optional<Address> findByAddressID(Long addressID);
     void deleteByAddressID(Long addressID);
-
 }

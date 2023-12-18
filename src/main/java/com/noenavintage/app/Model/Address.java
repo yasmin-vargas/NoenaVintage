@@ -9,12 +9,13 @@ public class Address {
     private int zipCode;
     private String city;
     private String country;
-
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
 
-    // Constructor
+    public Address() {
+    }
+
     public Address(String streetAddress, int zipCode, String city, String country) {
         this.streetAddress = streetAddress;
         this.zipCode = zipCode;

@@ -34,33 +34,18 @@ public class Review {
     }
 
     // Getters and setters
-
-    public long getReviewID() {return reviewID;
-    }
-
-    public void setReviewID(long reviewID) {this.reviewID = reviewID;}
-
+    public Long getReviewID() {return reviewID;}
+    public void setReviewID(Long reviewID) {this.reviewID = reviewID;}
     public Product getProduct() {return product;}
-
     public void setProduct(Product product) {this.product = product;}
-
     public User getUser() {return user;}
-
     public void setUser(User user) {this.user = user;}
-
     public String getReviewTitle() {return reviewTitle;}
-
     public void setReviewTitle(String reviewTitle) {this.reviewTitle = reviewTitle;}
-
     public String getReviewContent() {return reviewContent;}
-
     public void setReviewContent(String reviewContent) {this.reviewContent = reviewContent;}
-
     public int getRating() {return rating;}
-
     public void setRating(int rating) {this.rating = rating;}
-
     public Timestamp getReviewDate() {return reviewDate;}
-
     public void setReviewDate(Timestamp reviewDate) {this.reviewDate = reviewDate;}
 }

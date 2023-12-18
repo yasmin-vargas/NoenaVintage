@@ -3,17 +3,13 @@ import com.noenavintage.app.Model.Address;
 import com.noenavintage.app.Repository.AddressData;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/addresses")
 public class AddressController {
@@ -31,7 +27,7 @@ public class AddressController {
     }
 
     @GetMapping("/get/{addressID}")
-    public ResponseEntity<Address> getAddressById(@PathVariable Long addressID) {
+    public ResponseEntity<Address> getAddressByID(@PathVariable Long addressID) {
         Optional<Address> addressOptional = addressData.findByAddressID(addressID);
         return addressOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }

@@ -5,14 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/attributes")
 public class AttributeController {
@@ -28,8 +25,8 @@ public class AttributeController {
         return attributeData.findAll();
     }
 
-    @GetMapping("/getAttribute/{attributeID}")
-    public ResponseEntity<Attribute> getAttributeById(@PathVariable Long attributeID) {
+    @GetMapping("/get/{attributeID}")
+    public ResponseEntity<Attribute> getAttributeByID(@PathVariable Long attributeID) {
         Optional<Attribute> attributeOptional = attributeData.findByAttributeID(attributeID);
         return attributeOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -40,7 +37,7 @@ public class AttributeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAttribute);
     }
 
-    @PutMapping("/updateAttribute/{attributeID}")
+    @PutMapping("/update/{attributeID}")
     public ResponseEntity<Attribute> updateAttribute(
             @PathVariable Long attributeID,
             @RequestBody Attribute updatedAttribute) {
@@ -56,7 +53,7 @@ public class AttributeController {
         }
     }
 
-    @DeleteMapping("/deleteAttribute/{attributeID}")
+    @DeleteMapping("/delete/{attributeID}")
     public ResponseEntity<Void> deleteAttribute(@PathVariable Long attributeID) {
         Optional<Attribute> existingAttributeOptional = attributeData.findByAttributeID(attributeID);
         if (existingAttributeOptional.isPresent()) {

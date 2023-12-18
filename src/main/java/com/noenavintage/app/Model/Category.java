@@ -15,7 +15,7 @@ public class Category {
     private Long categoryID;
     private String categoryName;
     private String categoryDescription;
-    private Long parentCategory;
+    private Long parentCategoryID;
     private String categoryImageURL;
     @ManyToMany
     @JoinTable(
@@ -25,15 +25,15 @@ public class Category {
     private List<ProductCategory> productCategories;
     public Category() {  // Empty constructor
     }
-    public Category(String categoryName, String categoryDescription, Long parentCategory, String categoryImageURL) {
+    public Category(String categoryName, String categoryDescription, Long parentCategoryID, String categoryImageURL) {
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;
-        this.parentCategory = parentCategory;
+        this.parentCategoryID = parentCategoryID;
         this.categoryImageURL = categoryImageURL;
     }
 
     //Setters and Getters
-    public long getCategoryID() {
+    public Long getCategoryID() {
         return categoryID;
     }
     public void setCategoryID(long categoryID) {
@@ -51,11 +51,11 @@ public class Category {
     public void setCategoryDescription(String categoryDescription) {
         this.categoryDescription = categoryDescription;
     }
-    public Long getParentCategory() {
-        return parentCategory;
+    public Long getParentCategoryID() {
+        return parentCategoryID;
     }
-    public void setParentCategory(Long parentCategory) {
-        this.parentCategory = parentCategory;
+    public void setParentCategoryID(Long parentCategoryID) {
+        this.parentCategoryID = parentCategoryID;
     }
     public String getCategoryImageURL() {
         return categoryImageURL;

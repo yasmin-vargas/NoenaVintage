@@ -3,14 +3,11 @@ import com.noenavintage.app.Model.User;
 import com.noenavintage.app.Repository.UserData;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+@CrossOrigin(origins = "exp://192.168.8.9:8081")
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -32,9 +29,9 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");  // Authentication failed
         }
     }
-    //Register an account
+    //Register a new user account
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
         User createdUser = userData.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
