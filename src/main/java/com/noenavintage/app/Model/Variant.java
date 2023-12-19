@@ -24,7 +24,6 @@ public class Variant {
     private String variantSize;
     private int qtyInStock;
     private Timestamp regDate;
-
     private String variantImageURL;   //Main image
     private String thumbnailURL;
     @OneToMany(mappedBy = "variant")
@@ -58,12 +57,12 @@ public class Variant {
     public void setVariantSize(String variantSize) { this.variantSize = variantSize; }
     public int getQtyInStock() { return qtyInStock;}
     public void setQtyInStock(int qtyInStock) { this.qtyInStock = qtyInStock; }
-    public Timestamp getRegDate() {return regDate;}
-    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
     public String getVariantImageURL() { return variantImageURL; }
     public void setVariantImageURL(String variantImageURL) { this.variantImageURL = variantImageURL; }
     public String getThumbnailURL() { return thumbnailURL; }
     public void setThumbnailURL(String thumbnailURL) { this.thumbnailURL = thumbnailURL; }
+    public Timestamp getRegDate() {return regDate;}
+    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
     public List<VariantImage> getVariantImages() {return variantImages;}
     public void setVariantImages(List<VariantImage> variantImages) {this.variantImages = variantImages;}
 }

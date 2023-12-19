@@ -2,6 +2,7 @@ package com.noenavintage.app.Repository;
 import java.util.List;
 import java.util.Optional;
 import com.noenavintage.app.Model.Product;
+import com.noenavintage.app.Model.Variant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,7 @@ public interface ProductData extends JpaRepository<Product, Long>{
     List<Product> searchProducts(@Param("searchTerm") String searchTerm);
 
     // Order products by price and regDate
+    List<Product> findAllByOrderByRegDateDesc();
     List<Product> findAllByOrderByProductPriceAsc();
     List<Product> findAllByOrderByProductPriceDesc();
 

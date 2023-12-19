@@ -36,6 +36,17 @@ public class ImageController {
         Optional<Image> imageOptional = imageData.findByImageID(imageID);
         return imageOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    // Get all product images for a given productID
+    @GetMapping("/getProductImages/{productID}")
+    public List<ProductImage> getProductImagesByProductID(@PathVariable Long productID) {
+        return imageData.findByProductImages_Product_ProductID(productID);
+    }
+
+    // Get all variant images for a given variantID
+    @GetMapping("/getVariantImages/{variantID}")
+    public List<VariantImage> getVariantImagesByVariantID(@PathVariable Long variantID) {
+        return imageData.findByVariantImages_Variant_VariantID(variantID);
+    }
 
     // Add an image
     @PostMapping("/addImage")
@@ -69,17 +80,5 @@ public class ImageController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    // Get all product images for a given productID
-    @GetMapping("/getProductImages/{productID}")
-    public List<ProductImage> getProductImagesByProductID(@PathVariable Long productID) {
-        return imageData.findByProductImages_Product_ProductID(productID);
-    }
-
-    // Get all variant images for a given variantID
-    @GetMapping("/getVariantImages/{variantID}")
-    public List<VariantImage> getVariantImagesByVariantID(@PathVariable Long variantID) {
-        return imageData.findByVariantImages_Variant_VariantID(variantID);
     }
 }

@@ -31,7 +31,7 @@ public class CheckoutController {
     }
 
     // Get Checkout summary
-    @GetMapping("/checkoutSummary")
+    @GetMapping("/checkoutSummary/{bagID}")
     public ResponseEntity<Map<String, Object>> getCheckoutSummary(@RequestParam User user) {
         BigDecimal totalAmount = shoppingBagController.getTotalAmount(user);
         BigDecimal shippingCost = shoppingBagController.getShippingCost();
@@ -46,7 +46,7 @@ public class CheckoutController {
     }
 
     // Apply discount code
-    @PostMapping("/applyDiscountCode")
+    @PostMapping("/applyDiscountCode/{bagID}")
     public Map<String, Object> applyDiscountCode(@RequestParam User user, @RequestBody Map<String, String> requestBody) {
         BigDecimal totalAmount = shoppingBagController.getTotalAmount(user);
 
@@ -102,7 +102,7 @@ public class CheckoutController {
     }
 
     // Confirm order, create a new order
-    @PostMapping("/confirmCheckout")
+    @PostMapping("/confirmCheckout/{bagID}")
     public ResponseEntity<Map<String, Object>> confirmCheckout(@RequestBody User user) {
         // Get shopping bag items and total amount
         Long userID = user.getUserID();

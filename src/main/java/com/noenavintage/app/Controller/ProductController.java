@@ -34,6 +34,10 @@ public class ProductController {
         return productOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     // Sorting methods
+    @GetMapping("/sortByDateDesc")
+    public List<Product> getProductsSortedByDateDesc() {
+        return productData.findAllByOrderByRegDateDesc();
+    }
     @GetMapping("/sortByPriceAsc")
     public List<Product> getProductsSortedByPriceAsc() {
         return productData.findAllByOrderByProductPriceAsc();

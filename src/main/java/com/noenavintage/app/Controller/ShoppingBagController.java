@@ -50,10 +50,10 @@ public class ShoppingBagController {
     }
 
     // Get shipping cost
-    @GetMapping("/shippingcost")
+    @GetMapping("/shippingCost")
     public BigDecimal getShippingCost() {return SHIPPING_COST;}
 
-    @GetMapping("/totalamount")
+    @GetMapping("/totalAmount/{userID}")
     public BigDecimal getTotalAmount(@RequestBody User user) {
         ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
         if (shoppingBag != null) {
@@ -107,7 +107,7 @@ public class ShoppingBagController {
         }
     }
 
-    @PutMapping("/updateBagItemQty")
+    @PutMapping("/updateBagItemQty/{bagItemID}")
     public void updateBagItemQty(@RequestBody User user, @RequestBody Map<String, Object> bagItem) {
         ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
         if (shoppingBag != null) {
@@ -145,7 +145,7 @@ public class ShoppingBagController {
         shoppingBag.setTotalItemQty(totalBagQty);
     }
 
-    @DeleteMapping("/removeFromBag")
+    @DeleteMapping("/removeFromBag/{bagItemID}")
     // Removes BagItem to ShoppingBag
     public void removeFromBag(@RequestBody User user, @RequestParam Long bagItemID) {
         ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);

@@ -19,10 +19,9 @@ public interface VariantData extends JpaRepository<Variant, Long> {
     List<Variant> searchVariants(@Param("searchTerm") String searchTerm);
 
     // Order variants by price and regDate
+    List<Variant> findAllByOrderByRegDateDesc();
     List<Variant> findAllByOrderByVariantPriceAsc();
     List<Variant> findAllByOrderByVariantPriceDesc();
-    List<Variant> findAllByOrderByRegDateDesc();
-
 
     // Find variants by ID
     Optional<Variant> findByVariantID(Long variantID);

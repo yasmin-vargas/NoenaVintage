@@ -34,6 +34,7 @@ public class Product{
     private String supplierCode;
     private String productImageURL;
     private String thumbnailURL;
+    private Timestamp regDate;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Variant> variants;
     @OneToMany(mappedBy = "product")
@@ -44,7 +45,7 @@ public class Product{
     public Product() {
     }
 
-    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, int qtyInStock, String supplierCode, String productImageURL, String thumbnailURL, List<Variant> variants, List<ProductImage> productImages, List<Attribute> productAttributes){
+    public Product(List<Category> productCategories, String productName, String productBrand, String productDescription, String productColour, String productSize, BigDecimal importPrice, BigDecimal productPrice, int qtyInStock, String supplierCode, String productImageURL, String thumbnailURL, Timestamp regDate, List<Variant> variants, List<ProductImage> productImages, List<Attribute> productAttributes){
         this.productCategories = productCategories;
         this.productName = productName;
         this.productBrand = productBrand;
@@ -57,6 +58,7 @@ public class Product{
         this.supplierCode = supplierCode;
         this.productImageURL = productImageURL;
         this.thumbnailURL = thumbnailURL;
+        this.regDate = regDate;
         this.variants = variants;
         this.productImages = productImages;
         this.productAttributes = productAttributes;
@@ -123,6 +125,8 @@ public class Product{
     }
     public String getThumbnailURL(){return thumbnailURL;}
     public void setThumbnailURL(String thumbnailURL) {this.thumbnailURL = thumbnailURL;}
+    public Timestamp getRegDate() {return regDate;}
+    public void setRegDate(Timestamp regDate) {this.regDate = regDate;}
     public List<Variant> getVariants() {return variants;}
     public void setVariants(List<Variant> variants) {this.variants = variants;}
     public List<ProductImage> getProductImages() {return productImages;}

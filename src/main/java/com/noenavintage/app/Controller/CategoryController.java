@@ -33,7 +33,7 @@ public class CategoryController {
     }
     // Endpoint to get categories based on parentCategory
     @GetMapping("/parent/{parentCategoryID}")
-    public List<Category> getCategoriesByParentCategory(@PathVariable Long parentCategoryID) {
+    public List<Category> getCategoriesByParentCategoryID(@PathVariable Long parentCategoryID) {
         return categoryData.findByParentCategoryID(parentCategoryID);
     }
     // Endpoint to create a new category

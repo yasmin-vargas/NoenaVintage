@@ -30,12 +30,13 @@ public class OrderController {
     @Autowired
     public OrderController() {
     }
-    @GetMapping("/getAllOrders")
+    @GetMapping("/getAllOrders/{userID}")
     public List<Order> getAllOrders() {
         return orderData.findAll();
     }
+
     @GetMapping("/{orderNumber}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long orderNumber) {
+    public ResponseEntity<Order> getOrderByOrderNumber(@PathVariable Long orderNumber) {
         Optional<Order> orderOptional = orderData.findById(orderNumber);
         return orderOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -45,7 +46,6 @@ public class OrderController {
     }
     @GetMapping("/history/{userID}")
     public ResponseEntity<List<Order>> getOrderHistoryByUser(@PathVariable Long userID) {
-        // Assuming you have a method to retrieve a User by ID in your user data repository
         User user = userData.findByUserID(userID).orElse(null);
         if (user == null) {  // Handle the case where no user is found
             return ResponseEntity.notFound().build();
@@ -57,9 +57,8 @@ public class OrderController {
         return ResponseEntity.ok(orderHistory);
     }
     // Method to create new order and add it to the orderList when the customer places an order
-    @PostMapping("/createOrderFromBag")
+    @PostMapping("/createOrderFromBag/{bagID}")
     public ResponseEntity<Order> createOrderFromBag(@RequestBody User user) {
-        // Use the existing instance variable
         Long userID = user.getUserID();
         ShoppingBag shoppingBag = shoppingBagData.findBagByUser(user);
         if (shoppingBag != null && !shoppingBag.getBagItems().isEmpty()) {
@@ -104,7 +103,7 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
     }
-    //Managing orderStatus
+
     @PutMapping("/{orderNumber}/updatestatus/{newOrderStatus}")
     public ResponseEntity<Void> updateOrderStatus(@PathVariable Long orderNumber, @PathVariable String newOrderStatus) {
         orderData.updateOrderStatus(orderNumber, newOrderStatus);
